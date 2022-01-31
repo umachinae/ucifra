@@ -16,41 +16,49 @@
 ///   File: version.cpp
 ///
 /// Author: $author$
-///   Date: 1/26/2022
+///   Date: 1/28/2022
 ///////////////////////////////////////////////////////////////////////
-#include "xos/lib/ucifra/version.hpp"
+#include "xos/lib/ubn/version.hpp"
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_NAME)
-#define XOS_LIB_UCIFRA_VERSION_NAME   "libucifra"
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_NAME)
+#if !defined(XOS_LIB_UBN_VERSION_NAME)
+#define XOS_LIB_UBN_VERSION_NAME   "libubn"
+#endif /// !defined(XOS_LIB_UBN_VERSION_NAME)
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_MAJOR)
-#define XOS_LIB_UCIFRA_VERSION_MAJOR   0
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_MAJOR)
+#if !defined(XOS_LIB_UBN_VERSION_MAJOR)
+#define XOS_LIB_UBN_VERSION_MAJOR   0
+#endif /// !defined(XOS_LIB_UBN_VERSION_MAJOR)
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_MINOR)
-#define XOS_LIB_UCIFRA_VERSION_MINOR   0
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_MINOR)
+#if !defined(XOS_LIB_UBN_VERSION_MINOR)
+#define XOS_LIB_UBN_VERSION_MINOR   9
+#endif /// !defined(XOS_LIB_UBN_VERSION_MINOR)
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_RELEASE)
-#define XOS_LIB_UCIFRA_VERSION_RELEASE 0
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_RELEASE)
+#if !defined(XOS_LIB_UBN_VERSION_RELEASE)
+#define XOS_LIB_UBN_VERSION_RELEASE 0
+#endif /// !defined(XOS_LIB_UBN_VERSION_RELEASE)
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_BUILD_DATE)
-#define XOS_LIB_UCIFRA_VERSION_BUILD_DATE   1/26/2022
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD_DATE)
+#if !defined(XOS_LIB_UBN_VERSION_BUILD_PREFIX)
+#define XOS_LIB_UBN_VERSION_BUILD_PREFIX   ssleay-1997
+#endif /// !defined(XOS_LIB_UBN_VERSION_BUILD_PREFIX)
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_BUILD)
-#define XOS_LIB_UCIFRA_VERSION_BUILD   XOS_LIB_UCIFRA_VERSION_BUILD_DATE
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD)
+#if !defined(XOS_LIB_UBN_VERSION_BUILD_DATE)
+#define XOS_LIB_UBN_VERSION_BUILD_DATE   1/28/2022
+#endif /// !defined(XOS_LIB_UBN_VERSION_BUILD_DATE)
 
-#if !defined(XOS_LIB_UCIFRA_VERSION_BUILD_CHARS)
-#define XOS_LIB_UCIFRA_VERSION_BUILD_CHARS   XOS_2CHARS(XOS_LIB_UCIFRA_VERSION_BUILD)
-#endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD_CHARS)
+#if !defined(XOS_LIB_UBN_VERSION_BUILD)
+#if !defined(XOS_LIB_UBN_VERSION_BUILD_PREFIX)
+#define XOS_LIB_UBN_VERSION_BUILD   XOS_LIB_UBN_VERSION_BUILD_DATE
+#else /// !defined(XOS_LIB_UBN_VERSION_BUILD_PREFIX)
+#define XOS_LIB_UBN_VERSION_BUILD   XOS_LIB_UBN_VERSION_BUILD_PREFIX-XOS_LIB_UBN_VERSION_BUILD_DATE
+#endif /// !defined(XOS_LIB_UBN_VERSION_BUILD_PREFIX)
+#endif /// !defined(XOS_LIB_UBN_VERSION_BUILD)
+
+#if !defined(XOS_LIB_UBN_VERSION_BUILD_CHARS)
+#define XOS_LIB_UBN_VERSION_BUILD_CHARS   XOS_2CHARS(XOS_LIB_UBN_VERSION_BUILD)
+#endif /// !defined(XOS_LIB_UBN_VERSION_BUILD_CHARS)
 
 namespace xos {
 namespace lib {
-namespace ucifra {
+namespace ubn {
 
 
 namespace which {
@@ -66,9 +74,9 @@ public:
     versiont(const versiont& copy): extends(copy) {
     }
     versiont(): extends
-    (XOS_LIB_UCIFRA_VERSION_NAME, 
-     XOS_LIB_UCIFRA_VERSION_MAJOR, XOS_LIB_UCIFRA_VERSION_MINOR, 
-     XOS_LIB_UCIFRA_VERSION_RELEASE, XOS_LIB_UCIFRA_VERSION_BUILD_CHARS) {
+    (XOS_LIB_UBN_VERSION_NAME, 
+     XOS_LIB_UBN_VERSION_MAJOR, XOS_LIB_UBN_VERSION_MINOR, 
+     XOS_LIB_UBN_VERSION_RELEASE, XOS_LIB_UBN_VERSION_BUILD_CHARS) {
     }
     virtual ~versiont() {
     }
@@ -78,11 +86,11 @@ typedef versiont<> version;
 
 /// class version
 const xos::lib::version& version::which() {
-    static const xos::lib::ucifra::which::version version;
+    static const xos::lib::ubn::which::version version;
     return version;
 }
 
-} /// namespace ucifra
+} /// namespace ubn
 } /// namespace lib
 } /// namespace xos
 
