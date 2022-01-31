@@ -21,7 +21,7 @@
 # os specific QtCreator project .pri file for framework ucifra
 ########################################################################
 # Repository Depends: vmachinae
-# Depends: urostra;unadir;ufila;ucrono
+# Depends: ubn;ump;urostra;unadir;ufila;ucrono
 
 UNAME = $$system(uname)
 
@@ -60,6 +60,56 @@ contains(UCIFRA_OS,windows) {
 } # contains(UCIFRA_OS,windows)
 } # contains(UCIFRA_OS,linux)
 } # contains(UCIFRA_OS,macosx)
+
+########################################################################
+# ubn
+UBN_THIRDPARTY_PKG_MAKE_BLD = $${UBN_THIRDPARTY_PKG}/build/$${UCIFRA_BUILD}/$${BUILD_CONFIG}
+UBN_THIRDPARTY_PRJ_MAKE_BLD = $${OTHER_BLD}/$${UBN_THIRDPARTY_PRJ}/build/$${UCIFRA_BUILD}/$${BUILD_CONFIG}
+UBN_THIRDPARTY_PKG_BLD = $${UBN_THIRDPARTY_PKG}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+UBN_THIRDPARTY_PRJ_BLD = $${OTHER_BLD}/$${UBN_THIRDPARTY_PRJ}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+UBN_PKG_BLD = $${OTHER_BLD}/$${UBN_PKG}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+UBN_PRJ_BLD = $${OTHER_BLD}/$${UBN_PRJ}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+#UBN_LIB = $${UBN_THIRDPARTY_PKG_MAKE_BLD}/lib
+#UBN_LIB = $${UBN_THIRDPARTY_PRJ_MAKE_BLD}/lib
+#UBN_LIB = $${UBN_THIRDPARTY_PKG_BLD}/lib
+#UBN_LIB = $${UBN_THIRDPARTY_PRJ_BLD}/lib
+#UBN_LIB = $${UBN_PKG_BLD}/lib
+#UBN_LIB = $${UBN_PRJ_BLD}/lib
+UBN_LIB = $${UCIFRA_LIB}
+UBN_LIB_NAME = u$${UBN_NAME}
+
+# ubn LIBS
+#
+ubn_LIBS += \
+-L$${UBN_LIB}/lib$${UBN_LIB_NAME} \
+-l$${UBN_LIB_NAME} \
+
+########################################################################
+# ump
+UMP_THIRDPARTY_PKG_MAKE_BLD = $${UMP_THIRDPARTY_PKG}/build/$${UCIFRA_BUILD}/$${BUILD_CONFIG}
+UMP_THIRDPARTY_PRJ_MAKE_BLD = $${OTHER_BLD}/$${UMP_THIRDPARTY_PRJ}/build/$${UCIFRA_BUILD}/$${BUILD_CONFIG}
+UMP_THIRDPARTY_PKG_BLD = $${UMP_THIRDPARTY_PKG}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+UMP_THIRDPARTY_PRJ_BLD = $${OTHER_BLD}/$${UMP_THIRDPARTY_PRJ}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+UMP_PKG_BLD = $${OTHER_BLD}/$${UMP_PKG}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+UMP_PRJ_BLD = $${OTHER_BLD}/$${UMP_PRJ}/build/$${UCIFRA_BUILD}/QtCreator/$${BUILD_CONFIG}
+#UMP_LIB = $${UMP_THIRDPARTY_PKG_MAKE_BLD}/lib
+#UMP_LIB = $${UMP_THIRDPARTY_PRJ_MAKE_BLD}/lib
+#UMP_LIB = $${UMP_THIRDPARTY_PKG_BLD}/lib
+#UMP_LIB = $${UMP_THIRDPARTY_PRJ_BLD}/lib
+@UMP_LIB = $${UMP_PKG_BLD}/lib
+#UMP_LIB = $${UMP_PRJ_BLD}/lib
+UMP_LIB = $${UCIFRA_LIB}
+UMP_LIB_NAME = u$${UMP_NAME}
+
+# ump LIBS
+#
+ump_LIBS += \
+-L$${UMP_LIB}/lib$${UMP_LIB_NAME}z \
+-l$${UMP_LIB_NAME}z \
+-L$${UMP_LIB}/lib$${UMP_LIB_NAME}n \
+-l$${UMP_LIB_NAME}n \
+-L$${UMP_LIB}/lib$${UMP_LIB_NAME} \
+-l$${UMP_LIB_NAME} \
 
 ########################################################################
 # urostra
@@ -169,24 +219,46 @@ ucifra_DEFINES += \
 
 # ucifra LIBS
 #
-ucifra_LIBS += \
-$${ucrono_LIBS} \
-$${ufila_LIBS} \
-$${unadir_LIBS} \
-$${urostra_LIBS} \
-$${build_ucifra_LIBS} \
-
 contains(UCIFRA_OS,macosx|linux) {
-ucifra_LIBS += \
+ucifra_os_LIBS += \
 -lpthread \
 -ldl
 } else {
 } # contains(UCIFRA_OS,macosx|linux)
 
 contains(UCIFRA_OS,linux) {
-ucifra_LIBS += \
+ucifra_os_LIBS += \
 -lrt
 } else {
 } # contains(UCIFRA_OS,linux)
 
+ucifra_base_LIBS += \
+$${ucrono_LIBS} \
+$${ufila_LIBS} \
+$${unadir_LIBS} \
+$${urostra_LIBS} \
+$${build_ucifra_LIBS} \
 
+ucifra_bn_LIBS += \
+$${ucifra_LIBS} \
+$${ucifra_base_LIBS} \
+$${ubn_LIBS} \
+$${ucifra_os_LIBS} \
+
+ucifra_mp_LIBS += \
+$${ucifra_LIBS} \
+$${ucifra_base_LIBS} \
+$${ump_LIBS} \
+$${ucifra_os_LIBS} \
+
+ucifra_rsa_LIBS += \
+$${ucifra_LIBS} \
+$${ucifra_base_LIBS} \
+$${ubn_LIBS} \
+$${ump_LIBS} \
+$${ucifra_os_LIBS} \
+
+ucifra_LIBS += \
+$${ucifra_LIBS} \
+$${ucifra_base_LIBS} \
+$${ucifra_os_LIBS} \

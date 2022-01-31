@@ -21,7 +21,7 @@
 # build specific QtCreator project .pri file for framework ucifra
 ########################################################################
 # Repository Depends: vmachinae
-# Depends: urostra;unadir;ufila;ucrono
+# Depends: ubn;ump;urostra;unadir;ufila;ucrono
 
 contains(BUILD_OS,Uname) {
 UNAME = $$system(uname)
@@ -47,6 +47,50 @@ BUILD_OS = os
 } # contains(BUILD_OS,Uname)
 
 #BUILD_CPP_VERSION = 11
+
+########################################################################
+# ubn
+#
+# pkg-config --cflags --libs ubn
+#
+
+# build ubn INCLUDEPATH
+#
+build_ubn_INCLUDEPATH += \
+
+# build ubn DEFINES
+#
+build_ubn_DEFINES += \
+
+# build ubn FRAMEWORKS
+#
+build_ubn_FRAMEWORKS += \
+
+# build ubn LIBS
+#
+build_ubn_LIBS += \
+
+########################################################################
+# ump
+#
+# pkg-config --cflags --libs ump
+#
+
+# build ump INCLUDEPATH
+#
+build_ump_INCLUDEPATH += \
+
+# build ump DEFINES
+#
+build_ump_DEFINES += \
+
+# build ump FRAMEWORKS
+#
+build_ump_FRAMEWORKS += \
+
+# build ump LIBS
+#
+build_ump_LIBS += \
 
 ########################################################################
 # urostra
@@ -146,11 +190,15 @@ $${build_ucrono_INCLUDEPATH} \
 $${build_ufila_INCLUDEPATH} \
 $${build_unadir_INCLUDEPATH} \
 $${build_urostra_INCLUDEPATH} \
+$${build_ump_INCLUDEPATH} \
+$${build_ubn_INCLUDEPATH} \
 
 
 # build ucifra DEFINES
 #
 build_ucifra_DEFINES += \
+$${build_ubn_DEFINES} \
+$${build_ump_DEFINES} \
 $${build_urostra_DEFINES} \
 $${build_unadir_DEFINES} \
 $${build_ufila_DEFINES} \
