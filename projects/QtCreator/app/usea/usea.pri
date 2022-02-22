@@ -13,67 +13,75 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: libucifra.pri
+#   File: usea.pri
 #
 # Author: $author$
-#   Date: 1/26/2022
+#   Date: 2/21/2022
 #
-# generic QtCreator project .pri file for framework ucifra static library libucifra
+# generic QtCreator project .pri file for framework ucifra executable usea
 ########################################################################
 
 ########################################################################
-# libucifra
-XOS_LIB_UCIFRA_VERSION_BUILD_DATE = $$system(~/bin/utility/tdate)
+# usea
 
-# libucifra TARGET
+# usea TARGET
 #
-libucifra_TARGET = ucifra
-libucifra_TEMPLATE = lib
-libucifra_CONFIG += staticlib
+usea_TARGET = usea
 
-# libucifra INCLUDEPATH
+# usea INCLUDEPATH
 #
-libucifra_INCLUDEPATH += \
+usea_INCLUDEPATH += \
 $${ucifra_INCLUDEPATH} \
 
-# libucifra DEFINES
+# usea DEFINES
 #
-libucifra_DEFINES += \
+usea_DEFINES += \
 $${ucifra_DEFINES} \
 DEFAULT_LOGGING_LEVELS_ERROR \
-XOS_LIB_UCIFRA_VERSION_BUILD_DATE=$${XOS_LIB_UCIFRA_VERSION_BUILD_DATE} \
+XOS_CONSOLE_MAIN_MAIN \
 
 ########################################################################
-# libucifra OBJECTIVE_HEADERS
+# usea OBJECTIVE_HEADERS
 #
-#libucifra_OBJECTIVE_HEADERS += \
-#$${UCIFRA_SRC}/xos/lib/ucifra/version.hh \
+#usea_OBJECTIVE_HEADERS += \
+#$${UCIFRA_SRC}/xos/app/console/crypto/usea/main.hh \
 
-# libucifra OBJECTIVE_SOURCES
+# usea OBJECTIVE_SOURCES
 #
-#libucifra_OBJECTIVE_SOURCES += \
-#$${UCIFRA_SRC}/xos/lib/ucifra/version.mm \
+#usea_OBJECTIVE_SOURCES += \
+#$${UCIFRA_SRC}/xos/app/console/crypto/usea/main.mm \
 
 ########################################################################
-# libucifra HEADERS
+# usea HEADERS
 #
-libucifra_HEADERS += \
-$${CIFRA_SRC}/xos/crypto/base.hpp \
-$${CIFRA_SRC}/xos/crypto/hash.hpp \
-$${CIFRA_SRC}/xos/crypto/random.hpp \
-$${CIFRA_SRC}/xos/crypto/cipher.hpp \
+usea_HEADERS += \
+$${UCIFRA_SRC}/xos/app/console/crypto/base/main_opt.hpp \
+$${UCIFRA_SRC}/xos/app/console/crypto/base/main.hpp \
 \
-$${UCIFRA_SRC}/xos/lib/ucifra/version.hpp \
-
-# libucifra SOURCES
-#
-libucifra_SOURCES += \
-$${CIFRA_SRC}/xos/crypto/base.cpp \
-$${CIFRA_SRC}/xos/crypto/hash.cpp \
-$${CIFRA_SRC}/xos/crypto/random.cpp \
-$${CIFRA_SRC}/xos/crypto/cipher.cpp \
+$${UCIFRA_SRC}/xos/app/console/crypto/cipher/base/main_opt.hpp \
+$${UCIFRA_SRC}/xos/app/console/crypto/cipher/base/main.hpp \
 \
-$${UCIFRA_SRC}/xos/lib/ucifra/version.cpp \
+$${UCIFRA_SRC}/xos/app/console/crypto/cipher/main_opt.hpp \
+$${UCIFRA_SRC}/xos/app/console/crypto/cipher/main.hpp \
+
+# usea SOURCES
+#
+usea_SOURCES += \
+$${UCIFRA_SRC}/xos/app/console/crypto/cipher/main_opt.cpp \
+$${UCIFRA_SRC}/xos/app/console/crypto/cipher/main.cpp \
 
 ########################################################################
+# usea FRAMEWORKS
+#
+usea_FRAMEWORKS += \
+$${ucifra_FRAMEWORKS} \
+
+# usea LIBS
+#
+usea_LIBS += \
+$${ucifra_LIBS} \
+
+########################################################################
+# NO Qt
+QT -= gui core
 
