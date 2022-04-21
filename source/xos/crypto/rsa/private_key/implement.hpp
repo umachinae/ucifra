@@ -13,30 +13,37 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.cpp
+///   File: implement.hpp
 ///
 /// Author: $author$
-///   Date: 4/14/2022
+///   Date: 4/13/2022
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/crypto/rsa/main_opt.hpp"
+#ifndef XOS_CRYPTO_RSA_PRIVATE_KEY_IMPLEMENT_HPP
+#define XOS_CRYPTO_RSA_PRIVATE_KEY_IMPLEMENT_HPP
 
-#if !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-///#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_NSTANCE)
+#include "xos/crypto/rsa/key/implement.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
 namespace crypto {
 namespace rsa {
+namespace private_key {
 
-/// class main
-#if defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
+/// class implementt
+template <class TImplements = crypto::rsa::key::implement>
+class exported implementt: virtual public TImplements {
+public:
+    typedef TImplements implements;
+    typedef implementt derives; 
+    
+    /// constructors / destructor
+    virtual ~implementt() {
+    }
+}; /// class implementt
+typedef implementt<> implement;
 
+} /// namespace private_key
 } /// namespace rsa
 } /// namespace crypto
-} /// namespace console
-} /// namespace app
 } /// namespace xos
+
+#endif /// XOS_CRYPTO_RSA_PRIVATE_KEY_IMPLEMENT_HPP

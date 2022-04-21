@@ -13,30 +13,15 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.cpp
+///   File: output.cpp
 ///
 /// Author: $author$
 ///   Date: 4/14/2022
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/crypto/rsa/main_opt.hpp"
-
-#if !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-///#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_NSTANCE)
+#include "xos/crypto/output.hpp"
 
 namespace xos {
-namespace app {
-namespace console {
 namespace crypto {
-namespace rsa {
 
-/// class main
-#if defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-
-} /// namespace rsa
 } /// namespace crypto
-} /// namespace console
-} /// namespace app
 } /// namespace xos

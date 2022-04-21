@@ -51,7 +51,10 @@ public:
     typedef typename extends::char_reader_t char_reader_t;
 
     /// constructor / destructor
-    maint(): run_(0), input_x_(0), output_x_(0), output_x_ln_(true) {
+    maint()
+    : run_(0), 
+      input_x_(0), output_x_(0), output_x_ln_(true), 
+      output_hex_(0), output_hex_x_(0) {
     }
     virtual ~maint() {
     }
@@ -258,6 +261,75 @@ protected:
         return err;
     }
 
+    /// ...output_hex
+    int (derives::*output_hex_)(const void* out, size_t len);
+    virtual int output_hex(const void* out, size_t len) {
+        int err = 0;
+        if (output_hex_) {
+            err = (this->*output_hex_)(out, len);
+        } else {
+            err = default_output_hex(out, len);
+        }
+        return err;
+    }
+    virtual int default_output_hex(const void* out, size_t len) {
+        int err = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = ((const byte_t*)out)) && (len)) {
+            size_t cols = 32, col = 0;
+            char_t nextln = '\\';
+
+            for (col = 0; len; --len, ++bytes, ++col) {
+                if (cols <= (col)) {
+                    this->outln(&nextln, 1);
+                    col = 0;
+                }
+                this->output_hex_x(bytes, 1);
+            }
+            this->outln();
+        }
+        return err;
+    }
+    int (derives::*output_hex_x_)(const void* out, size_t len);
+    virtual int output_hex_x(const void* out, size_t len) {
+        int err = 0;
+        if (output_hex_x_) {
+            err = (this->*output_hex_x_)(out, len);
+        } else {
+            err = lower_output_hex_x(out, len);
+        }
+        return err;
+    }
+    virtual int lower_output_hex_x(const void* out, size_t len) {
+        int err = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = ((const byte_t*)out)) && (len)) {
+            this->outx(bytes, len);
+        }
+        return err;
+    }
+    virtual int upper_output_hex_x(const void* out, size_t len) {
+        int err = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = ((const byte_t*)out)) && (len)) {
+            this->outX(bytes, len);
+        }
+        return err;
+    }
+    virtual int set_lower_output_hex_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        output_hex_x_ = &derives::lower_output_hex_x;
+        return err;
+    }
+    virtual int set_upper_output_hex_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        output_hex_x_ = &derives::upper_output_hex_x;
+        return err;
+    }
+
     /// on...option
     virtual int on_set_plain_option
     (int optval, const char_t* optarg,
@@ -298,6 +370,8 @@ protected:
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         if (!(err = this->set_upper_output_x(argc, argv, env))) {
+            if (!(err = this->set_upper_output_hex_x(argc, argv, env))) {
+            }
         }
         return err;
     }
@@ -307,6 +381,8 @@ protected:
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         if (!(err = this->set_lower_output_x(argc, argv, env))) {
+            if (!(err = this->set_lower_output_hex_x(argc, argv, env))) {
+            }
         }
         return err;
     }

@@ -13,30 +13,27 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.cpp
+///   File: reader.cpp
 ///
 /// Author: $author$
-///   Date: 4/14/2022
+///   Date: 4/17/2022
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/crypto/rsa/main_opt.hpp"
+#include "xos/io/delegated/reader.hpp"
 
-#if !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-///#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_NSTANCE)
+#if !defined(XOS_IO_DELEGATED_READER_INSTANCE)
+///#define XOS_IO_DELEGATED_READER_INSTANCE
+#endif /// !defined(XOS_IO_DELEGATED_READER_INSTANCE)
 
 namespace xos {
-namespace app {
-namespace console {
-namespace crypto {
-namespace rsa {
+namespace io {
+namespace delegated {
 
-/// class main
-#if defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
-static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPT_INSTANCE)
+///  Class: readert
+#if defined(XOS_IO_DELEGATED_READER_INSTANCE)
+static reader the_reader;
+#endif /// defined(XOS_IO_DELEGATED_READER_INSTANCE)
 
-} /// namespace rsa
-} /// namespace crypto
-} /// namespace console
-} /// namespace app
+
+} /// namespace delegated
+} /// namespace io
 } /// namespace xos

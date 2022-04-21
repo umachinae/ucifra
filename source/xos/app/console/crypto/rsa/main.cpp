@@ -16,33 +16,33 @@
 ///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 2/21/2022
+///   Date: 4/14/2022
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/crypto/usea/main.hpp"
+#include "xos/app/console/crypto/rsa/main.hpp"
 
 #if defined(XOS_CONSOLE_MAIN_MAIN)
 #include "xos/console/main_main.cpp"
-#if !defined(XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_INSTANCE)
-#define XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_NSTANCE)
+#if !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_INSTANCE)
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_NSTANCE)
 #endif /// defined(XOS_CONSOLE_MAIN_MAIN)
 
-#if !defined(XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_INSTANCE)
-///#define XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_NSTANCE)
+#if !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_INSTANCE)
+///#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_NSTANCE)
 
 namespace xos {
 namespace app {
 namespace console {
 namespace crypto {
-namespace usea {
+namespace rsa {
 
 /// class main
-#if defined(XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_INSTANCE)
+#if defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_INSTANCE)
 static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_CRYPTO_USEA_MAIN_INSTANCE)
+#endif /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_INSTANCE)
 
-} /// namespace usea
+} /// namespace rsa
 } /// namespace crypto
 } /// namespace console
 } /// namespace app
