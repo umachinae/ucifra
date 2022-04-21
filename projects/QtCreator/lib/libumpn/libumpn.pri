@@ -23,7 +23,7 @@
 
 ########################################################################
 # libumpn
-XOS_LIB_UMPN_VERSION_BUILD_DATE = $$system(~/bin/utility/tdate)
+XOS_LIB_UMPN_VERSION_BUILD_DATE = 1/28/2022 #$$system(~/bin/utility/tdate)
 
 # libumpn TARGET
 #
