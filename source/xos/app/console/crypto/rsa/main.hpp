@@ -97,17 +97,27 @@ protected:
     : virtual public xos::crypto::random::prime::bn::reader::observer {
     friend class maint;
     public:
-        bn_reader_observer_t(maint& main): main_(main) {}
+        bn_reader_observer_t(maint& main): main_(main), output_(0) {}
         virtual ~bn_reader_observer_t() {}
         virtual ssize_t on_read(BIGNUM* n, size_t bytes) {
-            bool err_dot = true;
-            if ((err_dot)) {
+            bool output = true;
+            if ((output)) {
                 main_.err(".");
+                ++output_;
             }
             return bytes;
         }
+        virtual size_t clear_output() {
+            size_t output = output_;
+            output_ = 0;
+            if ((output)) {
+                main_.errln();
+            }
+            return output;
+        }
     protected:
         maint& main_;
+        size_t output_;
     }; /// class bn_reader_observer_t
     
 protected:
@@ -139,17 +149,53 @@ protected:
             bn_reader_observer_t observer(*this);
             xos::crypto::rsa::bn::key_generator generator(&observer);
             
+            observer.clear_output();
             if ((generator.generate(prv, pub, modbytes, exponent, expbytes, random))) {
-                byte_array_t array(modbytes);
-                byte_t *bytes = 0; size_t length = 0;
                 
-                if ((bytes = array.has_elements(length)) && (modbytes <= length)) {
+                observer.clear_output();
+                if (!(err = output_generated_key_pair_run(pub, prv, argc, argv, env))) {
+                }
+            }
+        }
+        return err;
+    }
 
-                    if (expbytes == (length = pub.get_exponent_msb(bytes, modbytes))) {
-                        this->output_hex_verbage_sized("exponent", bytes, length);
+    /// ...output_generated_key_pair_run
+    virtual int output_generated_key_pair_run
+    (const xos::crypto::rsa::public_key::extend& pub, 
+     const xos::crypto::rsa::private_key::extend& prv, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t expbytes = pub.expbytes(), 
+               modbytes = pub.modbytes(), 
+               pbytes = prv.pbytes();
+        byte_array_t array(modbytes);
+        byte_t *bytes = 0; size_t length = 0;
+        
+        if ((bytes = array.has_elements(length)) && (modbytes <= length)) {
 
-                        if (modbytes == (length = pub.get_modulus_msb(bytes, modbytes))) {
-                            this->output_hex_verbage_sized("modulus", bytes, length);
+            if (expbytes == (length = pub.get_exponent_msb(bytes, modbytes))) {
+                this->output_hex_verbage_sized("exponent", bytes, length);
+
+                if (modbytes == (length = pub.get_modulus_msb(bytes, modbytes))) {
+                    this->output_hex_verbage_sized("modulus", bytes, length);
+                    
+                    if (pbytes == (length = prv.get_p_msb(bytes, pbytes))) {
+                        this->output_hex_verbage_sized("p", bytes, length);
+                        
+                        if (pbytes == (length = prv.get_q_msb(bytes, pbytes))) {
+                            this->output_hex_verbage_sized("q", bytes, length);
+                            
+                            if (pbytes == (length = prv.get_dmp1_msb(bytes, pbytes))) {
+                                this->output_hex_verbage_sized("dmp1", bytes, length);
+                                
+                                if (pbytes == (length = prv.get_dmq1_msb(bytes, pbytes))) {
+                                    this->output_hex_verbage_sized("dmq1", bytes, length);
+                                    
+                                    if (pbytes == (length = prv.get_iqmp_msb(bytes, pbytes))) {
+                                        this->output_hex_verbage_sized("iqmp", bytes, length);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
