@@ -32,6 +32,20 @@
 #include "xos/crypto/rsa/mp/public_key.hpp"
 #include "xos/crypto/rsa/mp/private_key.hpp"
 
+#include "xos/crypto/pseudo/random/number/generator.hpp"
+#include "xos/crypto/random/number/reader.hpp"
+#include "xos/crypto/random/prime/reader.hpp"
+
+#include "xos/crypto/random/prime/bn/number.hpp"
+#include "xos/crypto/random/prime/bn/reader.hpp"
+#include "xos/crypto/random/prime/bn/miller_rabin.hpp"
+#include "xos/crypto/random/prime/bn/generator.hpp"
+#include "xos/crypto/rsa/bn/key_generator.hpp"
+
+#define XOS_APP_CONSOLE_RSA_MODULUS_BITS 2048
+#define XOS_APP_CONSOLE_RSA_EXPONENT_BITS 24
+#define XOS_APP_CONSOLE_RSA_EXPONENT_VALUE 0x010001
+
 namespace xos {
 namespace app {
 namespace console {
@@ -58,7 +72,11 @@ public:
     typedef typename extends::file_t file_t;
 
     /// constructor / destructor
-    maint(): run_(0) {
+    maint()
+    : run_(0),
+      exponent_value_(XOS_APP_CONSOLE_RSA_EXPONENT_VALUE), 
+      exponent_bits_(XOS_APP_CONSOLE_RSA_EXPONENT_BITS),
+      modulus_bits_(XOS_APP_CONSOLE_RSA_MODULUS_BITS) {
     }
     virtual ~maint() {
     }
@@ -73,7 +91,26 @@ protected:
     typedef typename extends::err_writer_t err_writer_t;
 
     typedef typename extends::byte_array_t byte_array_t;
+    typedef typename extends::crypto_array_t crypto_array_t;
 
+    class exported bn_reader_observer_t
+    : virtual public xos::crypto::random::prime::bn::reader::observer {
+    friend class maint;
+    public:
+        bn_reader_observer_t(maint& main): main_(main) {}
+        virtual ~bn_reader_observer_t() {}
+        virtual ssize_t on_read(BIGNUM* n, size_t bytes) {
+            bool err_dot = true;
+            if ((err_dot)) {
+                main_.err(".");
+            }
+            return bytes;
+        }
+    protected:
+        maint& main_;
+    }; /// class bn_reader_observer_t
+    
+protected:
     /// ...run
     int (derives::*run_)(int argc, char_t** argv, char_t** env);
     virtual int run(int argc, char_t** argv, char_t** env) {
@@ -82,6 +119,134 @@ protected:
             err = (this->*run_)(argc, argv, env);
         } else {
             err = extends::run(argc, argv, env);
+        }
+        return err;
+    }
+
+    /// ...bn_generate_key_pair_run
+    virtual int bn_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t expbits = this->exponent_bits(), expbytes = ((expbits + 7) >> 3),
+               modbits = this->modulus_bits(), modbytes = ((modbits + 7) >> 3),
+               pbits = (modbits >> 1), pbytes = (modbytes >> 1);
+        crypto_array_t exponent_array(exponent_value_, expbytes);
+        byte_t* exponent = 0; size_t exponent_length = 0;
+        
+        if ((exponent = exponent_array.has_elements(exponent_length)) && (expbytes == exponent_length)) {
+            xos::crypto::pseudo::random::number::generator random;
+            xos::crypto::rsa::bn::public_key pub(modbytes, expbytes);
+            xos::crypto::rsa::bn::private_key prv(pbytes);
+            bn_reader_observer_t observer(*this);
+            xos::crypto::rsa::bn::key_generator generator(&observer);
+            
+            if ((generator.generate(prv, pub, modbytes, exponent, expbytes, random))) {
+                byte_array_t array(modbytes);
+                byte_t *bytes = 0; size_t length = 0;
+                
+                if ((bytes = array.has_elements(length)) && (modbytes <= length)) {
+
+                    if (expbytes == (length = pub.get_exponent_msb(bytes, modbytes))) {
+                        this->output_hex_verbage_sized("exponent", bytes, length);
+
+                        if (modbytes == (length = pub.get_modulus_msb(bytes, modbytes))) {
+                            this->output_hex_verbage_sized("modulus", bytes, length);
+                        }
+                    }
+                }
+            }
+        }
+        return err;
+    }
+
+    /// ...pseudo_random_number_run
+    virtual int default_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_length = 0;
+        const byte_t *modulus = 0;
+
+        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length)
+            && (modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator generator;
+                
+                if (length == (sizeof_random = generator.generate(random, length))) {
+                    this->output_hex_verbage_sized("pseudo_random_number", random, sizeof_random);
+                }
+            }
+        }
+        return err;
+    }
+    virtual int bn_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_length = 0;
+        const byte_t *modulus = 0;
+
+        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length)
+            && (modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator random_reader;
+                xos::crypto::random::prime::bn::number number;
+
+                if ((number.is_created())) {
+                    bn_reader_observer_t reader_observer(*this);
+                    xos::crypto::random::prime::bn::generator generator(&reader_observer);
+
+                    if ((generator.create())) {
+                        
+                        if (length == (sizeof_random = generator.generate(number, length, random_reader))) {
+                            
+                            if (length == (sizeof_random = number.to_msb(random, length))) {
+                                this->output_hex_verbage_sized("pseudo_random_prime", random, sizeof_random);
+                            }
+                        }
+                        generator.destroy();
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    virtual int bn_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_length = 0;
+        const byte_t *modulus = 0;
+
+        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length)
+            && (modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator generator;
+                xos::crypto::random::prime::bn::number number;
+
+                if ((number.is_created())) {
+                    bn_reader_observer_t reader_observer(*this);
+                    xos::crypto::random::prime::bn::miller_rabin miller_rabin(&reader_observer);
+
+                    if ((miller_rabin.create())) {
+                        xos::crypto::random::prime::bn::reader reader;
+                        bool is_probably_prime = false;
+                        
+                        do {
+                            if (length == (sizeof_random = reader.read_msb(number, length, generator))) {
+                                if ((is_probably_prime = miller_rabin.probably_prime(number, length, generator))) {
+                                    if (length == (sizeof_random = number.to_msb(random, length))) {
+                                        this->output_hex_verbage_sized("pseudo_random_prime", random, sizeof_random);
+                                    }
+                                }
+                            }
+                        } while (!is_probably_prime);
+                        miller_rabin.destroy();
+                    }
+                }
+            }
         }
         return err;
     }
@@ -934,11 +1099,38 @@ protected:
         return (byte_t&)(rsa_decipher_[0]);
     }
 
+    /// ...exponent...
+    virtual uint32_t& set_exponent_value(const uint32_t& to) {
+        exponent_value_ = to;
+        return exponent_value_;
+    }
+    virtual uint32_t& exponent_value() const {
+        return (uint32_t&)exponent_value_;
+    }
+    virtual size_t& set_exponent_bits(const size_t& to) {
+        exponent_bits_ = to;
+        return exponent_bits_;
+    }
+    virtual size_t& exponent_bits() const {
+        return (size_t&)exponent_bits_;
+    }
+
+    /// ...modulus...
+    virtual size_t& set_modulus_bits(const size_t& to) {
+        modulus_bits_ = to;
+        return modulus_bits_;
+    }
+    virtual size_t& modulus_bits() const {
+        return (size_t&)modulus_bits_;
+    }
+
 protected:
     enum {
         modbytes_min = 512/8,
         modbytes_max = 4096/8
     };
+    uint32_t exponent_value_;
+    size_t exponent_bits_, modulus_bits_;
     byte_array_t exponent_, modulus_, p_, q_, dmp1_, dmq1_, iqmp_, rsa_plain_array_, rsa_cipher_array_;
     byte_t rsa_plain_[modbytes_max], rsa_cipher_[modbytes_max], rsa_decipher_[modbytes_max];
 }; /// class maint

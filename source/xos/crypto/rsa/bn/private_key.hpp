@@ -23,6 +23,7 @@
 #ifndef XOS_CRYPTO_RSA_BN_PRIVATE_KEY_HPP
 #define XOS_CRYPTO_RSA_BN_PRIVATE_KEY_HPP
 
+#include "xos/crypto/rsa/bn/license.hpp"
 #include "xos/crypto/rsa/bn/key.hpp"
 #include "xos/crypto/rsa/private_key/extend.hpp"
 

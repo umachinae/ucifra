@@ -26,6 +26,7 @@
 #include "xos/io/hex/read_to_array.hpp"
 #include "xos/io/crt/file/reader.hpp"
 #include "xos/base/array.hpp"
+#include "xos/crypto/array.hpp"
 
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPT "plain-text"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
@@ -347,6 +348,7 @@ protected:
     typedef typename extends::err_writer_t err_writer_t;
     
     typedef xos::byte_array byte_array_t;
+    typedef xos::crypto::array crypto_array_t;
 
     /// ...run
     int (derives::*run_)(int argc, char_t** argv, char_t** env);
@@ -357,6 +359,252 @@ protected:
         } else {
             err = extends::run(argc, argv, env);
         }
+        return err;
+    }
+
+    /// ...generate_key_pair_run
+    /// ...
+    int (derives::*generate_key_pair_run_)(int argc, char_t** argv, char_t** env);
+    virtual int generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (generate_key_pair_run_) {
+            err = (this->*generate_key_pair_run_)(argc, argv, env);
+        } else {
+            err = default_generate_key_pair_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int default_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = all_bn_generate_key_pair_run(argc, argv, env);
+        return err;
+    }
+    virtual int set_default_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        generate_key_pair_run_ = 0;
+        return err;
+    }
+    virtual int before_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_generate_key_pair_run(argc, argv, env))) {
+            int err2 = 0;
+            err = generate_key_pair_run(argc, argv, env);
+            if ((err2 = after_generate_key_pair_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_generate_key_pair_run;
+        return err;
+    }
+    /// ...bn_generate_key_pair_run
+    virtual int bn_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_bn_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_bn_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_bn_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_bn_generate_key_pair_run(argc, argv, env))) {
+            int err2 = 0;
+            err = bn_generate_key_pair_run(argc, argv, env);
+            if ((err2 = after_bn_generate_key_pair_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_bn_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        generate_key_pair_run_ = &derives::all_bn_generate_key_pair_run;
+        return err;
+    }
+    /// ...gmp_generate_key_pair_run
+    virtual int gmp_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_gmp_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_gmp_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_gmp_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_gmp_generate_key_pair_run(argc, argv, env))) {
+            int err2 = 0;
+            err = gmp_generate_key_pair_run(argc, argv, env);
+            if ((err2 = after_gmp_generate_key_pair_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_gmp_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        generate_key_pair_run_ = &derives::all_gmp_generate_key_pair_run;
+        return err;
+    }
+    /// ...
+    /// ...generate_key_pair_run
+
+    /// ...pseudo_random_number_run
+    int (derives::*pseudo_random_number_run_)(int argc, char_t** argv, char_t** env);
+    virtual int pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (pseudo_random_number_run_) {
+            err = (this->*pseudo_random_number_run_)(argc, argv, env);
+        } else {
+            err = default_pseudo_random_number_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int default_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_default_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_number_run_ = 0;
+        return err;
+    }
+    virtual int before_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_pseudo_random_number_run(argc, argv, env))) {
+            int err2 = 0;
+            err = pseudo_random_number_run(argc, argv, env);
+            if ((err2 = after_pseudo_random_number_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_pseudo_random_number_run;
+        return err;
+    }
+
+    /// ...bn_pseudo_random_prime_run
+    int (derives::*bn_pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
+    virtual int bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (bn_pseudo_random_prime_run_) {
+            err = (this->*bn_pseudo_random_prime_run_)(argc, argv, env);
+        } else {
+            err = bn_generate_pseudo_random_prime_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int bn_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_bn_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        bn_pseudo_random_prime_run_ = &derives::bn_generate_pseudo_random_prime_run;
+        return err;
+    }
+    virtual int bn_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_bn_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        bn_pseudo_random_prime_run_ = &derives::bn_miller_rabin_pseudo_random_prime_run;
+        return err;
+    }
+    virtual int before_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_bn_pseudo_random_prime_run(argc, argv, env))) {
+            int err2 = 0;
+            err = bn_pseudo_random_prime_run(argc, argv, env);
+            if ((err2 = after_bn_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_number_run_ = &derives::all_bn_pseudo_random_prime_run;
+        return err;
+    }
+
+    /// ...gmp_pseudo_random_prime_run
+    int (derives::*gmp_pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
+    virtual int gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (gmp_pseudo_random_prime_run_) {
+            err = (this->*gmp_pseudo_random_prime_run_)(argc, argv, env);
+        } else {
+            err = default_gmp_pseudo_random_prime_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int default_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_gmp_pseudo_random_prime_run(argc, argv, env))) {
+            int err2 = 0;
+            err = gmp_pseudo_random_prime_run(argc, argv, env);
+            if ((err2 = after_gmp_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_number_run_ = &derives::gmp_pseudo_random_prime_run;
         return err;
     }
 
@@ -1563,6 +1811,8 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
+        if (!(err = set_generate_key_pair_run(argc, argv, env))) {
+        }
         return err;
     }
     virtual const char_t* generate_key_option_usage(const char_t*& optarg, const struct option* longopt) {
@@ -1681,6 +1931,8 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
+        if (!(err = set_bn_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
+        }
         return err;
     }
     virtual const char_t* miller_rabin_option_usage(const char_t*& optarg, const struct option* longopt) {
@@ -1735,6 +1987,8 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
+        if (!(err = set_bn_pseudo_random_prime_run(argc, argv, env))) {
+        }
         if (!(err = set_bn_rsa_public_encrypt_run(argc, argv, env))) {
             if (!(err = set_bn_rsa_private_encrypt_run(argc, argv, env))) {
                 if (!(err = set_bn_test_key_pair_run(argc, argv, env))) {
@@ -1756,6 +2010,8 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
+        if (!(err = set_gmp_pseudo_random_prime_run(argc, argv, env))) {
+        }
         if (!(err = set_gmp_rsa_public_encrypt_run(argc, argv, env))) {
             if (!(err = set_gmp_rsa_private_encrypt_run(argc, argv, env))) {
                 if (!(err = set_gmp_test_key_pair_run(argc, argv, env))) {
