@@ -16,50 +16,48 @@
 ///   File: generator.hpp
 ///
 /// Author: $author$
-///   Date: 4/23/2022
-///
+///   Date: 4/26/2022
+/// 
 /// Tatu Ylonen's prime generation modified to be a C++ class that
-/// uses Eric Young's big number library instead of gmp used in the
-/// original C version.
+/// uses the gmp used in the original C version.
 /// 
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_CRYPTO_RANDOM_PRIME_BN_GENERATOR_HPP
-#define XOS_CRYPTO_RANDOM_PRIME_BN_GENERATOR_HPP
+#ifndef XOS_CRYPTO_RANDOM_PRIME_MP_GENERATOR_HPP
+#define XOS_CRYPTO_RANDOM_PRIME_MP_GENERATOR_HPP
 
-#include "xos/crypto/random/prime/bn/license.hpp"
-#include "xos/crypto/random/prime/bn/number.hpp"
-#include "xos/crypto/random/prime/bn/reader.hpp"
+#include "xos/crypto/random/prime/mp/license.hpp"
+#include "xos/crypto/random/prime/mp/number.hpp"
+#include "xos/crypto/random/prime/mp/reader.hpp"
 #include "xos/crypto/random/prime/generator.hpp"
 #include "xos/base/extended/creator.hpp"
 
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
-#include "xos/crypto/random/prime/bn/miller_rabin.hpp"
+#include "xos/crypto/random/prime/mp/miller_rabin.hpp"
 #endif /// !defined(_CRSA_NO_MILLER_RABIN_TEST)
 
 namespace xos {
 namespace crypto {
 namespace random {
 namespace prime {
-namespace bn {
+namespace mp {
 
 /// class generatort
 template 
-<class TNumber = xos::crypto::random::prime::bn::number,
- class TReader = xos::crypto::random::prime::bn::reader,
+<class TNumber = xos::crypto::random::prime::mp::number,
+ class TReader = xos::crypto::random::prime::mp::reader,
  class TRandomReader = xos::crypto::random::reader,
  class TNumberExtend = typename TNumber::number_extend_t,
  class TNumberImplement = typename TNumber::number_implement_t,
  class TReaderImplement = typename TReader::reader_implement_t,
  class TReaderObserver = typename TReader::observer,
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
- class TMillerRabin = xos::crypto::random::prime::bn::miller_rabin,
+ class TMillerRabin = xos::crypto::random::prime::mp::miller_rabin,
 #endif /// !defined(_CRSA_NO_MILLER_RABIN_TEST)
  class TImplements = xos::creatort<TReaderImplement>, 
  class TGenerator = xos::crypto::random::prime::generatort<BIGPRIME, TImplements, TReader>,
  class TExtends = xos::extended::creatort<TImplements, TGenerator> >
 
-class exported generatort
-: virtual public TNumberImplement, virtual public TImplements, public TExtends {
+class exported generatort: virtual public TNumberImplement, virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements, implements;
     typedef TExtends Extends, extends;
@@ -77,16 +75,14 @@ public:
 
     /// constructors / destructor
     generatort(reader_observer_t* reader_observer) 
-    : m_reader_observer(reader_observer),
-      m_temp1(0), m_temp2(0), m_ctx(0)
+    : m_reader_observer(reader_observer)
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
       , m_miller_rabin(m_reader_observer)
 #endif /// !defined(_RSA_NO_MILLER_RABIN_TEST)
     {
     }
     generatort() 
-    : m_reader_observer(0),
-      m_temp1(0), m_temp2(0), m_ctx(0)
+    : m_reader_observer(0)
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
       , m_miller_rabin(m_reader_observer)
 #endif /// !defined(_RSA_NO_MILLER_RABIN_TEST)
@@ -111,20 +107,19 @@ public:
     }
     virtual bool create(bool no_miller_rabin_test) {
         if ((this->destroyed())) {
-            if ((m_temp1 = BN_new())) {
-            if ((m_temp2 = BN_new())) {
-            if ((m_ctx = BN_CTX_new())) {
+            mpz_init_set_ui(&m_temp1, 0);
+            mpz_init_set_ui(&m_temp2, 0);
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
             if ((m_miller_rabin.create())) {
                 this->m_no_miller_rabin_test = no_miller_rabin_test;
 #endif /// !defined(_CRSA_NO_MILLER_RABIN_TEST)
+                this->set_is_created();
                 return true;
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
-                m_miller_rabin.destroy(); }
+            }
 #endif /// !defined(_CRSA_NO_MILLER_RABIN_TEST)
-                this->BN_CTX_free(m_ctx); }
-                this->BN_free(m_temp2); }
-                this->BN_free(m_temp1); }
+            mpz_clear(&m_temp2);
+            mpz_clear(&m_temp1);
         }
         return false;
     }
@@ -136,9 +131,8 @@ public:
             this->m_no_miller_rabin_test = false;
             is_true = m_miller_rabin.destroy();
 #endif /// !defined(_CRSA_NO_MILLER_RABIN_TEST)
-            this->BN_CTX_free(m_ctx);
-            this->BN_free(m_temp2);
-            this->BN_free(m_temp1);
+            mpz_clear(&m_temp2);
+            mpz_clear(&m_temp1);
             return is_true;
         }
         return false;
@@ -182,16 +176,19 @@ public:
 
             /* Set the lowest bit to make it odd.
              */
-            BN_set_bit(prime,0);
+            mpz_set_ui(&m_temp1, 1);
+            mpz_ior(prime, prime, &m_temp1);
 
             /* Set the highest bit to make it n bits.
              */
-            BN_set_bit(prime,(bits-1));
+            mpz_mul_2exp(&m_temp1, &m_temp1, (bits-1));
+            mpz_ior(prime, prime, &m_temp1);
 
 #if defined(_RSA_SET_TWO_HIGHEST_BITS)
             /* Set the second highest bit.
              */
-            BN_set_bit(prime,(bits-2));
+            mpz_tdiv_q_2exp(&m_temp1, &m_temp1,1);
+            mpz_ior(prime, prime, &m_temp1);
 #endif /// defined(_RSA_SET_TWO_HIGHEST_BITS)
 
 #if !defined(_RSA_NO_SMALL_PRIME_TEST)
@@ -204,7 +201,8 @@ public:
                 num_primes = 0;
             } else {
                 for (num_primes = 0; this->m_small_primes[num_primes] != 0; num_primes++) {
-                    this->m_moduli[num_primes] = BN_mod_word(prime, this->m_small_primes[num_primes]);
+                    mpz_mod_ui(&m_temp1, prime, this->m_small_primes[num_primes]);
+                    this->m_moduli[num_primes] = mpz_get_ui(&m_temp1);
                 }
             }
 
@@ -232,16 +230,16 @@ public:
                 /* It passed the small prime test (not divisible by any of them).
                  * Compute the number in question.
                  */
-                BN_add_word(prime,difference);
+                mpz_add_ui(prime, prime, difference);
 #endif /// !defined(_RSA_NO_SMALL_PRIME_TEST)
 
-                /* Perform the fermat test for witness 2. This means
+                /* Perform the fermat test for witness. This means
                  * it is not prime if 2^n mod n != 2.
                  */
-                BN_set_word(m_temp1,2);
-                BN_mod_exp(m_temp2,m_temp1,prime,prime,m_ctx);
-                if (BN_cmp(m_temp1,m_temp2)) {
-                    /* Failed the fermat test for witness 2.
+                mpz_set_ui(&m_temp1, 2);
+                mpz_powm(&m_temp2, &m_temp1, prime, prime);
+                if (mpz_cmp(&m_temp1, &m_temp2)) {
+                    /* Failed the fermat test for witness.
                      */
                     continue;
                 }
@@ -249,7 +247,7 @@ public:
                 if (!(this->m_no_miller_rabin_test)) {
                     /* Perform the Miller Rabin primality test.
                      */
-                    if (!(m_miller_rabin.probably_prime
+                    if (!(m_miller_rabin.ProbablyPrime
                         (prime, bytes, this->m_miller_rabin_reps, random))) {
                         /* Failed the Miller Rabin probable primality test.
                          */
@@ -262,7 +260,8 @@ public:
                  * Sanity check: does it still have the high bit set
                  * (we might have wrapped around)?
                  */
-                if (BN_is_bit_set(prime,bits-1)) {
+                mpz_tdiv_q_2exp(&m_temp1, prime, bits-1);
+                if (mpz_get_ui(&m_temp1)) {
                     /* passed sanity check!
                      * it does still have the high bit set
                      */
@@ -272,9 +271,8 @@ public:
                 break;
             }
 #endif /// !defined(_RSA_NO_SMALL_PRIME_TEST)
-
         } while (retry);
-        
+
         if ((reader_observer)) {
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
             m_miller_rabin.delegate_observer(old_reader_observer);
@@ -291,18 +289,17 @@ public:
 
 protected:
     reader_observer_t* m_reader_observer;
-    BIGNUM *m_temp1, *m_temp2;
-    BN_CTX *m_ctx;
+    MP_INT m_temp1, m_temp2;
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
     miller_rabin_t m_miller_rabin;
 #endif /// !defined(_RSA_NO_MILLER_RABIN_TEST)
 }; /// class generatort
 typedef generatort<> generator;
 
-} /// namespace bn
+} /// namespace mp
 } /// namespace prime
 } /// namespace random
 } /// namespace crypto
 } /// namespace xos
 
-#endif /// XOS_CRYPTO_RANDOM_PRIME_BN_GENERATOR_HPP
+#endif /// XOS_CRYPTO_RANDOM_PRIME_MP_GENERATOR_HPP

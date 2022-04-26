@@ -129,17 +129,17 @@ public:
                 if ((privatekey.create(bytes))) {
                     BIGPRIME* pp = p;
                     BIGPRIME* qp = q;
-                    ::BN_CTX* ctx = 0;
+                    BN_CTX* ctx = 0;
 
                     if ((ctx = privatekey.ctx())) {
-                    if ((p_minus_1 = ::BN_new())) {
-                    if ((q_minus_1 = ::BN_new())) {
-                    if ((phi = ::BN_new())) {
-                    if ((G = ::BN_new())) {
-                    if ((F = ::BN_new())) {
-                    if ((one = ::BN_new())) {
-                    if ((temp = ::BN_new())) {
-                        ::BN_set_word(one,1);
+                    if ((p_minus_1 = BN_new())) {
+                    if ((q_minus_1 = BN_new())) {
+                    if ((phi = BN_new())) {
+                    if ((G = BN_new())) {
+                    if ((F = BN_new())) {
+                    if ((one = BN_new())) {
+                    if ((temp = BN_new())) {
+                        BN_set_word(one,1);
 
                         success = true;
                         do {
@@ -163,7 +163,7 @@ public:
 
                                 /* n = p * q (the public modulus).
                                  */
-                                ::BN_mul(n,p,q);
+                                BN_mul(n,p,q);
 
                                 /* Make sure that p*q will be modbits in size.
                                  */
@@ -176,7 +176,7 @@ public:
 
                                 /* See if q < p.
                                  */
-                                cmp = ::BN_cmp(p,q);
+                                cmp = BN_cmp(p,q);
                                 if (!cmp) {
                                     /* q == p
                                      */
@@ -185,23 +185,23 @@ public:
                                 } else if (cmp<0) {
                                     /* p < q
                                      */
-                                    ::BN_copy(p_minus_1,q);
-                                    ::BN_copy(q_minus_1,p);
+                                    BN_copy(p_minus_1,q);
+                                    BN_copy(q_minus_1,p);
                                     /* swap p and q
                                      */
-                                    ::BN_copy(q,p);
-                                    ::BN_copy(p,q_minus_1);
+                                    BN_copy(q,p);
+                                    BN_copy(p,q_minus_1);
                                 } else {
                                     /* p > q
                                      */
-                                    ::BN_copy(p_minus_1,p);
-                                    ::BN_copy(q_minus_1,q);
+                                    BN_copy(p_minus_1,p);
+                                    BN_copy(q_minus_1,q);
                                 }
 
                                 /* Make sure that p and q are not too close together
                                  */
-                                ::BN_sub(temp,p_minus_1,q_minus_1);
-                                ::BN_rshift(p_minus_1,p_minus_1,10);
+                                BN_sub(temp,p_minus_1,q_minus_1);
+                                BN_rshift(p_minus_1,p_minus_1,10);
 
                                 if (BN_cmp(temp,p_minus_1)<0) {
                                     /* p-q < p>>10 (they are too close)
@@ -214,7 +214,7 @@ public:
                                  * (in case one or both were false positives...
                                  * Though this is quite improbable).
                                  */
-                                ::BN_gcd(temp,p,q,ctx);
+                                BN_gcd(temp,p,q,ctx);
 
                                 if (BN_cmp(temp,one)) {
                                     /* No, p and q are not relatively prime
@@ -231,76 +231,76 @@ public:
 
                                 /* Compute p-1 and q-1.
                                  */
-                                ::BN_sub(p_minus_1,p,one);
-                                ::BN_sub(q_minus_1,q,one);
+                                BN_sub(p_minus_1,p,one);
+                                BN_sub(q_minus_1,q,one);
 
                                 /* phi = (p - 1) * (q - 1); the number of positive integers less than p*q
                                  * that are relatively prime to p*q.
                                  */
-                                ::BN_mul(phi,p_minus_1,q_minus_1);
+                                BN_mul(phi,p_minus_1,q_minus_1);
 
                                 /* G is the number of "spare key sets" for a given modulus n.  The smaller
                                  * G is, the better.  The smallest G can get is 2.
                                  * F = phi / G; the number of relative prime numbers per spare key set.
                                  */
-                                ::BN_gcd(G,p_minus_1,q_minus_1,ctx);
-                                ::BN_div(F,temp,phi,G,ctx);
+                                BN_gcd(G,p_minus_1,q_minus_1,ctx);
+                                BN_div(F,temp,phi,G,ctx);
 
                                 if (exponent) {
-                                    ::BN_set_msb(e,exponent,expbytes);
+                                    BN_set_msb(e,exponent,expbytes);
                                 } else {
                                     /* Find a suitable e (the public exponent).
                                      */
-                                    ::BN_set_word(e,1);
-                                    ::BN_lshift(e,e,ebits);
-                                    ::BN_add_word(e,1);
+                                    BN_set_word(e,1);
+                                    BN_lshift(e,e,ebits);
+                                    BN_add_word(e,1);
 
                                     /* make lowest bit 1
                                     /* Keep adding 2 until it is relatively prime to (p-1)(q-1).
                                      */
                                     do {
-                                        ::BN_gcd(temp,e,phi,ctx);
-                                        if ((cmp = ::BN_cmp(temp,one))>0)
-                                            ::BN_add_word(e,2);
+                                        BN_gcd(temp,e,phi,ctx);
+                                        if ((cmp = BN_cmp(temp,one))>0)
+                                            BN_add_word(e,2);
                                     } while (cmp>0);
                                 }
 
                                 /* d is the multiplicative inverse of e, mod F.  Could also be mod
                                  * (p-1)(q-1); however, we try to choose the smallest possible d.
                                  */
-                                d = ::BN_mod_inverse(e,F,ctx);
+                                d = BN_mod_inverse(e,F,ctx);
                                 if (d) {
                                     /* Compute dmp1 = d mod p-1.
                                      */
-                                    ::BN_mod(dmp1,d,p_minus_1,ctx);
+                                    BN_mod(dmp1,d,p_minus_1,ctx);
 
                                     /* Compute dmq1 = d mod q-1.
                                      */
-                                    ::BN_mod(dmq1,d,q_minus_1,ctx);
-                                    ::BN_free(d);
+                                    BN_mod(dmq1,d,q_minus_1,ctx);
+                                    BN_free(d);
                                 }
 
                                 /* iqmp is the multiplicative inverse of q, mod p, if q < p.  It is used
                                  * when doing private key RSA operations using the chinese remainder
                                  * theorem method.
                                  */
-                                d = ::BN_mod_inverse(q,p,ctx);
+                                d = BN_mod_inverse(q,p,ctx);
                                 if (d) {
-                                    ::BN_copy(iqmp,d);
-                                    ::BN_free(d);
+                                    BN_copy(iqmp,d);
+                                    BN_free(d);
                                 }
 
                             } while (retryq);
 
                         } while (retryp);
 
-                    ::BN_free(temp); }
-                    ::BN_free(one); }
-                    ::BN_free(F); }
-                    ::BN_free(G); }
-                    ::BN_free(phi); }
-                    ::BN_free(q_minus_1); }
-                    ::BN_free(p_minus_1); }
+                    BN_free(temp); }
+                    BN_free(one); }
+                    BN_free(F); }
+                    BN_free(G); }
+                    BN_free(phi); }
+                    BN_free(q_minus_1); }
+                    BN_free(p_minus_1); }
                     (ctx = 0); }
 
                     if (!success)

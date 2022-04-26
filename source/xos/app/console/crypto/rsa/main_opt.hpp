@@ -111,8 +111,8 @@
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTARG "[string]"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTUSE "RSA public key"
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTVAL_S "p::"
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTVAL_C 'p'
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTVAL_S "u::"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTVAL_C 'u'
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTION \
    {XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPT, \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTARG_REQUIRED, \
@@ -144,6 +144,32 @@
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTARG_REQUIRED, \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTARG_RESULT, \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTVAL_C}, \
+
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPT "generate-prime"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_RESULT 0
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG ""
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTUSE "generate random prime"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_S "p"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_C 'p'
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTION \
+   {XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPT, \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_REQUIRED, \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_RESULT, \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_C}, \
+
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPT "pseudo-random"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG_RESULT 0
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG ""
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTUSE "generate random number"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_S "s"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_C 's'
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTION \
+   {XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPT, \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG_REQUIRED, \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG_RESULT, \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_C}, \
 
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MILLER_RABIN_OPT "miller-rabin"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MILLER_RABIN_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
@@ -259,6 +285,8 @@
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTVAL_S \
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PRIVATE_KEY_OPTVAL_S \
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MILLER_RABIN_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_FERMAT_WITNESS_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MODULUS_BITS_OPTVAL_S \
@@ -280,6 +308,8 @@
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PUBLIC_KEY_OPTION \
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PRIVATE_KEY_OPTION \
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTION \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MILLER_RABIN_OPTION \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_FERMAT_WITNESS_OPTION \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MODULUS_BITS_OPTION \
@@ -293,11 +323,11 @@
 
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPTIONS_CHARS \
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPTIONS_CHARS_EXTEND \
-   XOS_APP_CONSOLE_UCIFRA_MAIN_OPTIONS_CHARS
+   XOS_APP_CONSOLE_UCIFRA_HELP_MAIN_OPTIONS_CHARS
 
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPTIONS_OPTIONS \
    XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_OPTIONS_OPTIONS_EXTEND \
-   XOS_APP_CONSOLE_UCIFRA_MAIN_OPTIONS_OPTIONS
+   XOS_APP_CONSOLE_UCIFRA_HELP_MAIN_OPTIONS_OPTIONS
 
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_ARGS 0 
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_ARGV 0,
@@ -329,11 +359,12 @@ public:
     /// constructor / destructor
     main_optt()
     : run_(0), 
-      test_key_pair_run_(0),
+      generate_key_pair_run_(0), 
+      pseudo_random_number_run_(0), pseudo_random_prime_run_(0), test_key_pair_run_(0),
       output_public_key_run_(0), output_get_public_key_run_(0), output_test_public_key_run_(0),
       output_private_key_run_(0), output_get_private_key_run_(0), output_test_private_key_run_(0),
       output_key_pair_run_(0), output_get_key_pair_run_(0), output_test_key_pair_run_(0),
-      verbose_(false) {
+      no_miller_rabin_test_(false), verbose_(false) {
     }
     virtual ~main_optt() {
     }
@@ -362,6 +393,7 @@ protected:
         return err;
     }
 
+    ///
     /// ...generate_key_pair_run
     /// ...
     int (derives::*generate_key_pair_run_)(int argc, char_t** argv, char_t** env);
@@ -468,8 +500,11 @@ protected:
     }
     /// ...
     /// ...generate_key_pair_run
+    /// 
 
+    ///
     /// ...pseudo_random_number_run
+    /// ...
     int (derives::*pseudo_random_number_run_)(int argc, char_t** argv, char_t** env);
     virtual int pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
@@ -487,6 +522,24 @@ protected:
     virtual int set_default_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         pseudo_random_number_run_ = 0;
+        return err;
+    }
+    virtual int bn_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_bn_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_number_run_ = &derives::bn_pseudo_random_number_run;
+        return err;
+    }
+    virtual int gmp_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_gmp_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_number_run_ = &derives::gmp_pseudo_random_number_run;
         return err;
     }
     virtual int before_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
@@ -513,16 +566,77 @@ protected:
         run_ = &derives::all_pseudo_random_number_run;
         return err;
     }
+    /// ...
+    /// ...pseudo_random_number_run
+    /// 
 
-    /// ...bn_pseudo_random_prime_run
-    int (derives::*bn_pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
-    virtual int bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+    /// ...pseudo_random_prime_run
+    int (derives::*pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
+    virtual int pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        if (bn_pseudo_random_prime_run_) {
-            err = (this->*bn_pseudo_random_prime_run_)(argc, argv, env);
+        if (pseudo_random_prime_run_) {
+            err = (this->*pseudo_random_prime_run_)(argc, argv, env);
         } else {
-            err = bn_generate_pseudo_random_prime_run(argc, argv, env);
+            err = default_pseudo_random_prime_run(argc, argv, env);
         }
+        return err;
+    }
+    virtual int default_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = generate_pseudo_random_prime_run(argc, argv, env);
+        return err;
+    }
+    virtual int set_default_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_prime_run_ = 0;
+        return err;
+    }
+    virtual int before_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_pseudo_random_prime_run(argc, argv, env))) {
+            int err2 = 0;
+            err = pseudo_random_prime_run(argc, argv, env);
+            if ((err2 = after_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_number_run_ = &derives::all_pseudo_random_prime_run;
+        return err;
+    }
+
+    ///
+    /// ...generate_pseudo_random_prime_run
+    /// ...
+    int (derives::*generate_pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
+    virtual int generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (generate_pseudo_random_prime_run_) {
+            err = (this->*generate_pseudo_random_prime_run_)(argc, argv, env);
+        } else {
+            err = default_generate_pseudo_random_prime_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int default_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = bn_generate_pseudo_random_prime_run(argc, argv, env);
+        return err;
+    }
+    virtual int set_default_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        generate_pseudo_random_prime_run_ = 0;
         return err;
     }
     virtual int bn_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
@@ -531,7 +645,67 @@ protected:
     }
     virtual int set_bn_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        bn_pseudo_random_prime_run_ = &derives::bn_generate_pseudo_random_prime_run;
+        generate_pseudo_random_prime_run_ = &derives::bn_generate_pseudo_random_prime_run;
+        return err;
+    }
+    virtual int gmp_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_gmp_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        generate_pseudo_random_prime_run_ = &derives::gmp_generate_pseudo_random_prime_run;
+        return err;
+    }
+    virtual int before_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_generate_pseudo_random_prime_run(argc, argv, env))) {
+            int err2 = 0;
+            err = generate_pseudo_random_prime_run(argc, argv, env);
+            if ((err2 = after_generate_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        pseudo_random_prime_run_ = &derives::all_generate_pseudo_random_prime_run;
+        return err;
+    }
+    /// ...
+    /// ...generate_pseudo_random_prime_run
+    /// 
+
+    /// 
+    /// ...miller_rabin_pseudo_random_prime_run
+    /// ...
+    int (derives::*miller_rabin_pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
+    virtual int miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (miller_rabin_pseudo_random_prime_run_) {
+            err = (this->*miller_rabin_pseudo_random_prime_run_)(argc, argv, env);
+        } else {
+            err = default_miller_rabin_pseudo_random_prime_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int default_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = bn_miller_rabin_pseudo_random_prime_run(argc, argv, env);
+        return err;
+    }
+    virtual int set_default_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        miller_rabin_pseudo_random_prime_run_ = 0;
         return err;
     }
     virtual int bn_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
@@ -540,73 +714,45 @@ protected:
     }
     virtual int set_bn_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        bn_pseudo_random_prime_run_ = &derives::bn_miller_rabin_pseudo_random_prime_run;
+        miller_rabin_pseudo_random_prime_run_ = &derives::bn_miller_rabin_pseudo_random_prime_run;
         return err;
     }
-    virtual int before_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+    virtual int gmp_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         return err;
     }
-    virtual int after_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+    virtual int set_gmp_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        miller_rabin_pseudo_random_prime_run_ = &derives::gmp_miller_rabin_pseudo_random_prime_run;
+        return err;
+    }
+    virtual int before_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         return err;
     }
-    virtual int all_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+    virtual int after_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        if (!(err = before_bn_pseudo_random_prime_run(argc, argv, env))) {
+        return err;
+    }
+    virtual int all_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
             int err2 = 0;
-            err = bn_pseudo_random_prime_run(argc, argv, env);
-            if ((err2 = after_bn_pseudo_random_prime_run(argc, argv, env))) {
+            err = miller_rabin_pseudo_random_prime_run(argc, argv, env);
+            if ((err2 = after_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
                 if (!(err)) err = err2;
             }
         }
         return err;
     }
-    virtual int set_bn_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+    virtual int set_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        pseudo_random_number_run_ = &derives::all_bn_pseudo_random_prime_run;
+        pseudo_random_prime_run_ = &derives::all_miller_rabin_pseudo_random_prime_run;
         return err;
     }
-
-    /// ...gmp_pseudo_random_prime_run
-    int (derives::*gmp_pseudo_random_prime_run_)(int argc, char_t** argv, char_t** env);
-    virtual int gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
-        if (gmp_pseudo_random_prime_run_) {
-            err = (this->*gmp_pseudo_random_prime_run_)(argc, argv, env);
-        } else {
-            err = default_gmp_pseudo_random_prime_run(argc, argv, env);
-        }
-        return err;
-    }
-    virtual int default_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
-        return err;
-    }
-    virtual int before_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
-        return err;
-    }
-    virtual int after_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
-        return err;
-    }
-    virtual int all_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
-        if (!(err = before_gmp_pseudo_random_prime_run(argc, argv, env))) {
-            int err2 = 0;
-            err = gmp_pseudo_random_prime_run(argc, argv, env);
-            if ((err2 = after_gmp_pseudo_random_prime_run(argc, argv, env))) {
-                if (!(err)) err = err2;
-            }
-        }
-        return err;
-    }
-    virtual int set_gmp_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
-        int err = 0;
-        pseudo_random_number_run_ = &derives::gmp_pseudo_random_prime_run;
-        return err;
-    }
+    /// ...
+    /// ...miller_rabin_pseudo_random_prime_run
+    /// 
 
     ///
     /// ...rsa_public_encrypt_run
@@ -1555,6 +1701,71 @@ protected:
     /// ...output...key_pair_run
     /// 
 
+    ///
+    /// ...output_modulus...run
+    /// ...
+    /// ...output_modulus_bits_run
+    virtual int output_modulus_bits_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_output_modulus_bits_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_output_modulus_bits_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_output_modulus_bits_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_output_modulus_bits_run(argc, argv, env))) {
+            int err2 = 0;
+            err = output_modulus_bits_run(argc, argv, env);
+            if ((err2 = after_output_modulus_bits_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_output_modulus_bits_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_output_modulus_bits_run;
+        return err;
+    }
+    /// ...output_modulus_bytes_run
+    virtual int output_modulus_bytes_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_output_modulus_bytes_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_output_modulus_bytes_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_output_modulus_bytes_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_output_modulus_bytes_run(argc, argv, env))) {
+            int err2 = 0;
+            err = output_modulus_bytes_run(argc, argv, env);
+            if ((err2 = after_output_modulus_bytes_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_output_modulus_bytes_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_output_modulus_bytes_run;
+        return err;
+    }
+    /// ...
+    /// ...output_modulus...run
+    /// 
+
     /// output_hex_verbage...
     virtual int output_hex_verbage_sized(const char_t* verbage, const byte_array_t& array) {
         int err = 0;
@@ -1700,6 +1911,19 @@ protected:
         xos::io::hex::read_to_byte_arrays to_arrays(&exponent, &modulus, &p, &q, &dmp1, &dmq1, &iqmp, null);
         err = on_set_hex_literals(to_arrays, literal);
         return err;
+    }
+
+    /// ...miller_rabin_test
+    virtual bool set_miller_rabin_test(const bool to = true) {
+        no_miller_rabin_test_ = !to;
+        return no_miller_rabin_test_;
+    }
+    virtual bool set_no_miller_rabin_test(const bool to = true) {
+        no_miller_rabin_test_ = to;
+        return no_miller_rabin_test_;
+    }
+    virtual bool no_miller_rabin_test() const {
+        return no_miller_rabin_test_;
     }
 
     /// ...verbose
@@ -1927,11 +2151,44 @@ protected:
     }
 
     /// ...on...option...
+    virtual int on_generate_prime_option
+    (int optval, const char_t* optarg, const char_t* optname,
+     int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if (!(err = set_pseudo_random_number_run(argc, argv, env))) {
+            if (!(err = set_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err = set_generate_pseudo_random_prime_run(argc, argv, env))) {
+                }
+            }
+        }
+        return err;
+    }
+    virtual const char_t* generate_prime_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTUSE;
+        optarg = XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG;
+        return chars;
+    }
+    virtual int on_pseudo_random_option
+    (int optval, const char_t* optarg, const char_t* optname,
+     int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if (!(err = set_pseudo_random_number_run(argc, argv, env))) {
+        }
+        return err;
+    }
+    virtual const char_t* pseudo_random_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTUSE;
+        optarg = XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG;
+        return chars;
+    }
     virtual int on_miller_rabin_option
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        if (!(err = set_bn_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
+        set_miller_rabin_test();
+        if (!(err = set_pseudo_random_prime_run(argc, argv, env))) {
+            if (!(err = set_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
+            }
         }
         return err;
     }
@@ -1944,6 +2201,11 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
+        set_no_miller_rabin_test();
+        if (!(err = set_pseudo_random_prime_run(argc, argv, env))) {
+            if (!(err = set_default_pseudo_random_prime_run(argc, argv, env))) {
+            }
+        }
         return err;
     }
     virtual const char_t* fermat_witness_option_usage(const char_t*& optarg, const struct option* longopt) {
@@ -1953,12 +2215,23 @@ protected:
     }
 
     /// ...on...option...
+    virtual int on_set_modulus_bits_option
+    (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        return err;
+    }
     virtual int on_modulus_bits_option
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
         if ((optarg) && (optarg[0])) {
+            if (!(err = on_set_modulus_bits_option(optarg, optind, argc, argv, env))) {
+                if (!(err = set_output_modulus_bits_run(argc, argv, env))) {
+                }
+            }
         } else {
+            if (!(err = set_output_modulus_bits_run(argc, argv, env))) {
+            }
         }
         return err;
     }
@@ -1973,6 +2246,8 @@ protected:
         int err = 0;
         if ((optarg) && (optarg[0])) {
         } else {
+            if (!(err = set_output_modulus_bytes_run(argc, argv, env))) {
+            }
         }
         return err;
     }
@@ -1987,7 +2262,11 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        if (!(err = set_bn_pseudo_random_prime_run(argc, argv, env))) {
+        if (!(err = set_bn_generate_pseudo_random_prime_run(argc, argv, env))) {
+            if (!(err = set_bn_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err = set_bn_pseudo_random_number_run(argc, argv, env))) {
+                }
+            }
         }
         if (!(err = set_bn_rsa_public_encrypt_run(argc, argv, env))) {
             if (!(err = set_bn_rsa_private_encrypt_run(argc, argv, env))) {
@@ -2010,7 +2289,11 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        if (!(err = set_gmp_pseudo_random_prime_run(argc, argv, env))) {
+        if (!(err = set_gmp_generate_pseudo_random_prime_run(argc, argv, env))) {
+            if (!(err = set_gmp_miller_rabin_pseudo_random_prime_run(argc, argv, env))) {
+                if (!(err = set_gmp_pseudo_random_number_run(argc, argv, env))) {
+                }
+            }
         }
         if (!(err = set_gmp_rsa_public_encrypt_run(argc, argv, env))) {
             if (!(err = set_gmp_rsa_private_encrypt_run(argc, argv, env))) {
@@ -2092,6 +2375,12 @@ protected:
             err = this->on_key_pair_option(optval, optarg, optname, optind, argc, argv, env);
             break;
 
+        case XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_C:
+            err = this->on_generate_prime_option(optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_C:
+            err = this->on_pseudo_random_option(optval, optarg, optname, optind, argc, argv, env);
+            break;
         case XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MILLER_RABIN_OPTVAL_C:
             err = this->on_miller_rabin_option(optval, optarg, optname, optind, argc, argv, env);
             break;
@@ -2156,6 +2445,12 @@ protected:
             chars = this->key_pair_option_usage(optarg, longopt);
             break;
 
+        case XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_C:
+            chars = this->generate_prime_option_usage(optarg, longopt);
+            break;
+        case XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_C:
+            chars = this->pseudo_random_option_usage(optarg, longopt);
+            break;
         case XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MILLER_RABIN_OPTVAL_C:
             chars = this->miller_rabin_option_usage(optarg, longopt);
             break;
@@ -2208,7 +2503,7 @@ protected:
     }
 
 protected:
-    bool verbose_;
+    bool no_miller_rabin_test_, verbose_;
 }; /// class main_optt
 typedef main_optt<> main_opt;
 

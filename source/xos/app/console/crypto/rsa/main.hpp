@@ -42,6 +42,11 @@
 #include "xos/crypto/random/prime/bn/generator.hpp"
 #include "xos/crypto/rsa/bn/key_generator.hpp"
 
+#include "xos/crypto/random/prime/mp/number.hpp"
+#include "xos/crypto/random/prime/mp/reader.hpp"
+#include "xos/crypto/random/prime/mp/miller_rabin.hpp"
+#include "xos/crypto/random/prime/mp/generator.hpp"
+
 #define XOS_APP_CONSOLE_RSA_MODULUS_BITS 2048
 #define XOS_APP_CONSOLE_RSA_EXPONENT_BITS 24
 #define XOS_APP_CONSOLE_RSA_EXPONENT_VALUE 0x010001
@@ -119,6 +124,33 @@ protected:
         maint& main_;
         size_t output_;
     }; /// class bn_reader_observer_t
+    
+    class exported mp_reader_observer_t
+: virtual public xos::crypto::random::prime::mp::reader::observer {
+    friend class maint;
+    public:
+        mp_reader_observer_t(maint& main): main_(main), output_(0) {}
+        virtual ~mp_reader_observer_t() {}
+        virtual ssize_t on_read(MP_INT* n, size_t bytes) {
+            bool output = true;
+            if ((output)) {
+                main_.err(".");
+                ++output_;
+            }
+            return bytes;
+        }
+        virtual size_t clear_output() {
+            size_t output = output_;
+            output_ = 0;
+            if ((output)) {
+                main_.errln();
+            }
+            return output;
+        }
+    protected:
+        maint& main_;
+        size_t output_;
+    }; /// class mp_reader_observer_t
     
 protected:
     /// ...run
@@ -207,11 +239,9 @@ protected:
     /// ...pseudo_random_number_run
     virtual int default_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        size_t modulus_length = 0;
-        const byte_t *modulus = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
 
-        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length)
-            && (modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
             size_t length = 0, sizeof_random = 0;
             byte_t *random = 0;
             
@@ -225,25 +255,29 @@ protected:
         }
         return err;
     }
+    
+    ///
+    /// bn_...pseudo_random...run
+    /// ...
     virtual int bn_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        size_t modulus_length = 0;
-        const byte_t *modulus = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
 
-        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length)
-            && (modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
             size_t length = 0, sizeof_random = 0;
             byte_t *random = 0;
             
-            if ((random = &this->rsa_decipher(sizeof_random)) && (sizeof_random >= (length = (modulus_length / 2)))) {
+            if ((random = &this->rsa_decipher(sizeof_random)) 
+                && (sizeof_random >= (length = (modulus_length / 2)))) {
                 xos::crypto::pseudo::random::number::generator random_reader;
                 xos::crypto::random::prime::bn::number number;
 
                 if ((number.is_created())) {
+                    bool no_miller_rabin_test = this->no_miller_rabin_test();
                     bn_reader_observer_t reader_observer(*this);
                     xos::crypto::random::prime::bn::generator generator(&reader_observer);
 
-                    if ((generator.create())) {
+                    if ((generator.create(no_miller_rabin_test))) {
                         
                         if (length == (sizeof_random = generator.generate(number, length, random_reader))) {
                             
@@ -260,15 +294,14 @@ protected:
     }
     virtual int bn_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        size_t modulus_length = 0;
-        const byte_t *modulus = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
 
-        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length)
-            && (modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
             size_t length = 0, sizeof_random = 0;
             byte_t *random = 0;
             
-            if ((random = &this->rsa_decipher(sizeof_random)) && (sizeof_random >= (length = (modulus_length / 2)))) {
+            if ((random = &this->rsa_decipher(sizeof_random)) 
+                 && (sizeof_random >= (length = (modulus_length / 2)))) {
                 xos::crypto::pseudo::random::number::generator generator;
                 xos::crypto::random::prime::bn::number number;
 
@@ -296,6 +329,134 @@ protected:
         }
         return err;
     }
+    virtual int bn_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
+
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) 
+                && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator generator;
+                xos::crypto::random::prime::bn::reader reader;
+                xos::crypto::random::prime::bn::number number;
+
+                if (length == (sizeof_random = reader.read_msb(number, length, generator))) {
+
+                    if (length == (sizeof_random = number.to_msb(random, length))) {
+                        this->output_hex_verbage_sized("pseudo_random", random, sizeof_random);
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    /// ...
+    /// bn_...pseudo_random...run
+    /// 
+
+    ///
+    /// gmp_...pseudo_random...run
+    /// ...
+    virtual int gmp_generate_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
+
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) 
+                && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator random_reader;
+                xos::crypto::random::prime::mp::number number;
+
+                if ((number.is_created())) {
+                    bool no_miller_rabin_test = this->no_miller_rabin_test();
+                    mp_reader_observer_t reader_observer(*this);
+                    xos::crypto::random::prime::mp::generator generator(&reader_observer);
+
+                    if ((generator.create(no_miller_rabin_test))) {
+                        
+                        if (length == (sizeof_random = generator.generate(number, length, random_reader))) {
+                            
+                            if (length == (sizeof_random = number.to_msb(random, length))) {
+                                this->output_hex_verbage_sized("pseudo_random_prime", random, sizeof_random);
+                            }
+                        }
+                        generator.destroy();
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    virtual int gmp_miller_rabin_pseudo_random_prime_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
+
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) 
+                 && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator generator;
+                xos::crypto::random::prime::mp::number number;
+
+                if ((number.is_created())) {
+                    mp_reader_observer_t reader_observer(*this);
+                    xos::crypto::random::prime::mp::miller_rabin miller_rabin(&reader_observer);
+
+                    if ((miller_rabin.create())) {
+                        xos::crypto::random::prime::mp::reader reader;
+                        bool is_probably_prime = false;
+                        
+                        do {
+                            if (length == (sizeof_random = reader.read_msb(number, length, generator))) {
+                                if ((is_probably_prime = miller_rabin.probably_prime(number, length, generator))) {
+                                    if (length == (sizeof_random = number.to_msb(random, length))) {
+                                        this->output_hex_verbage_sized("pseudo_random_prime", random, sizeof_random);
+                                    }
+                                }
+                            }
+                        } while (!is_probably_prime);
+                        miller_rabin.destroy();
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    virtual int gmp_pseudo_random_number_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_bits = this->modulus_bits(), modulus_length = ((modulus_bits + 7) >> 3);
+
+        if ((modulus_length >= modbytes_min) && (modulus_length <= modbytes_max)) {
+            size_t length = 0, sizeof_random = 0;
+            byte_t *random = 0;
+            
+            if ((random = &this->rsa_decipher(sizeof_random)) 
+                && (sizeof_random >= (length = (modulus_length / 2)))) {
+                xos::crypto::pseudo::random::number::generator generator;
+                xos::crypto::random::prime::mp::reader reader;
+                xos::crypto::random::prime::mp::number number;
+
+                if (length == (sizeof_random = reader.read_msb(number, length, generator))) {
+
+                    if (length == (sizeof_random = number.to_msb(random, length))) {
+                        this->output_hex_verbage_sized("pseudo_random", random, sizeof_random);
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    /// ...
+    /// gmp_...pseudo_random...run
+    /// 
 
     ///
     /// ...rsa_public_...crypt_run
@@ -527,7 +688,7 @@ protected:
             size_t sizeof_plain = 0;
             byte_t *plain = &this->rsa_plain(sizeof_plain);
             
-            if ((size = this->random(plain, modbytes))) {
+            if ((size = this->random_plain(plain, modbytes))) {
                 size_t sizeof_cipher = 0;
                 byte_t *cipher = &this->rsa_cipher(sizeof_cipher);
 
@@ -826,6 +987,38 @@ protected:
     /// ...output_test_..._run
     /// 
 
+    /// ...modulus...
+    /// ...
+    virtual int on_set_modulus_bits_option
+    (const char_t* optarg, int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            string_t set_modulus_bits(optarg);
+            size_t modulus_bits = set_modulus_bits.to_unsigned(), 
+                   modulus_bytes = (modulus_bits >> 3);
+            if ((modbytes_min <= modulus_bytes) && (modbytes_max >= modulus_bytes)) {
+                this->set_modulus_bits(modulus_bits);
+            }
+        }
+        return err;
+    }
+    virtual int output_modulus_bits_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_bits = this->modulus_bits();
+        unsigned_to_string output_modulus_bits(modulus_bits);
+        this->outln(output_modulus_bits);
+        return err;
+    }
+    virtual int output_modulus_bytes_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_bytes = (this->modulus_bits() >> 3);
+        unsigned_to_string output_modulus_bytes(modulus_bytes);
+        this->outln(output_modulus_bytes);
+        return err;
+    }
+    /// ...
+    /// ...output_modulus...run
+
     /// on_set...literal
     virtual int on_set_rsa_plain_literal(const char_t* chars, int argc, char_t**argv, char_t**env) {
         int err = 0;
@@ -894,27 +1087,40 @@ protected:
         return err;
     }
 
-    /// random
+    /// random...
+    virtual size_t random_plain(unsigned char *buff, size_t len) const {
+        size_t size = 0;
+
+        if ((buff) && (len)) {
+
+            if (len == (size = random(buff, len))) {
+                buff[0] &= 0x7F;
+            }
+        }
+        return size;
+    }
     virtual size_t random(unsigned char *buff, size_t len) const {
         static unsigned randnum = 0;
         static unsigned avail = 0;
-        size_t i=0;
+        size_t size = 0;
         
-        for (i=0; i<len;) {
-            if (avail<1) {
-                randnum=(unsigned)rand();
-                avail=sizeof(randnum);
-            }
-            if ((buff[i]=(char)(randnum&255))!=0) {
-                i++;
-            }
-            if ((randnum>>=8)<1) {
-                avail=0;
-            } else {
-                avail--;
+        if ((buff) && (len)) {
+            for (size = 0; size < len;) {
+                if (avail < 1) {
+                    randnum = (unsigned)rand();
+                    avail = sizeof(randnum);
+                }
+                if (0 != (buff[size] = ((char)(randnum & 0xFF)))) {
+                    ++size;
+                }
+                if ((randnum >>= 8) < 1) {
+                    avail = 0;
+                } else {
+                    --avail;
+                }
             }
         }
-        return i;
+        return size;
     }
 
     /// size_of

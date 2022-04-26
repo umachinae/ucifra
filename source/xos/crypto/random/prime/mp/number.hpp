@@ -16,27 +16,27 @@
 ///   File: number.hpp
 ///
 /// Author: $author$
-///   Date: 4/22/2022
+///   Date: 4/25/2022
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_CRYPTO_RANDOM_PRIME_BN_NUMBER_HPP
-#define XOS_CRYPTO_RANDOM_PRIME_BN_NUMBER_HPP
+#ifndef XOS_CRYPTO_RANDOM_PRIME_MP_NUMBER_HPP
+#define XOS_CRYPTO_RANDOM_PRIME_MP_NUMBER_HPP
 
-#include "xos/crypto/random/prime/bn/license.hpp"
+#include "xos/crypto/random/prime/mp/license.hpp"
 #include "xos/crypto/base.hpp"
 #include "xos/base/created.hpp"
 #include "xos/base/attached.hpp"
-#include "bn_msb.h"
+#include "mpz_msb.h"
 
 namespace xos {
 namespace crypto {
 namespace random {
 namespace prime {
-namespace bn {
+namespace mp {
 
-typedef BIGNUM BIGPRIME;
-typedef BIGNUM* BIGINT;
+typedef MP_INT BIGPRIME;
+typedef MP_INT BIGINT;
 
-typedef BIGNUM* number_attached_t;
+typedef MP_INT* number_attached_t;
 typedef int number_unattached_t;
 enum { number_unattached = 0 };
 
@@ -50,31 +50,13 @@ public:
     /// constructors / destructor
     virtual ~number_implementt() {
     }
-
-    /// BN...free
-    virtual bool BN_CTX_free(BN_CTX*& a) {
-        if ((a)) {
-            ::BN_CTX_free(a);
-            a = 0;
-            return true;
-        }
-        return false;
-    }
-    virtual bool BN_free(BIGNUM*& a) {
-        if ((a)) {
-            ::BN_free(a);
-            a = 0;
-            return true;
-        }
-        return false;
-    }
 }; /// class number_implementt
 typedef number_implementt<> number_implement;
 
 /// class number_extendt
 template 
 <class TExtends = xos::crypto::extend, 
- class TImplements = xos::crypto::random::prime::bn::number_implement>
+ class TImplements = xos::crypto::random::prime::mp::number_implement>
 
 class exported number_extendt: virtual public TImplements, public TExtends {
 public:
@@ -95,8 +77,8 @@ typedef number_extendt<> number_extend;
 
 /// class numbert
 template 
-<class TNumberImplement = xos::crypto::random::prime::bn::number_implement, 
- class TNumberExtend = xos::crypto::random::prime::bn::number_extend,
+<class TNumberImplement = xos::crypto::random::prime::mp::number_implement, 
+ class TNumberExtend = xos::crypto::random::prime::mp::number_extend,
  class TImplements = xos::creatort<TNumberImplement>, 
  class TExtends = xos::createdt
  <number_attached_t, number_unattached_t, number_unattached, TImplements, TNumberExtend> >
@@ -109,7 +91,7 @@ public:
     
     typedef TNumberImplement number_implement_t;
     typedef TNumberExtend number_extend_t;
-    
+
     /// constructors / destructor
     numbert(const unsigned& value) {
         if (!(this->create(value))) {
@@ -140,11 +122,12 @@ public:
     virtual ssize_t from_msb(const byte_t* from, unsigned bytes) {
         ssize_t size = 0;
         if ((from) && (bytes)) {
-            BIGNUM* detached = 0;
+            MP_INT* detached = 0;
             if ((detached = this->attached_to())) {
-                LOGGER_LOG_TRACE("BN_set_msb(detached, from, bytes = " << unsigned_to_string(bytes) << ")...");
-                BN_set_msb(detached, from, bytes);
-                size = bytes;
+                mp_size_t mpsize = 0;
+                if (bytes <= (mpsize = mpz_set_msb(detached, from, bytes))) {
+                    size = mpsize;
+                }
             }
         }
         return size;
@@ -152,16 +135,17 @@ public:
     virtual ssize_t to_msb(byte_t* to, unsigned bytes) const {
         ssize_t size = 0;
         if ((to) && (bytes)) {
-            BIGNUM* detached = 0;
+            MP_INT* detached = 0;
             if ((detached = this->attached_to())) {
-                LOGGER_LOG_TRACE("BN_get_msb(detached, from, bytes = " << unsigned_to_string(bytes) << ")...");
-                BN_get_msb(detached, to, bytes);
-                size = bytes;
+                mp_size_t mpsize = 0;
+                if (bytes <= (mpsize = mpz_get_msb(to, bytes, detached))) {
+                    size = mpsize;
+                }
             }
         }
         return size;
     }
-    
+
     /// ...MSB
     virtual ssize_t FromMSB(const byte_t* from, unsigned bytes) {
         ssize_t size = this->from_msb(from, bytes);
@@ -172,37 +156,41 @@ public:
         return size;
     }
 
-    /// operator BIGNUM*
-    virtual operator BIGNUM* () const {
+    /// operator MP_INT*
+    virtual operator MP_INT* () const {
         return this->attached_to();
     }
 
 protected:
     /// create / destroy
-    virtual bool create(unsigned value) {
-        BIGNUM* detached = 0;
-        if ((detached = BN_new())) {
-            this->attach_created(detached);
-            BN_set_word(detached, value);
-            return true;
+    virtual bool create(unsigned initialValue = 0) {
+        if ((this->destroyed())) {
+            MP_INT* detached = 0;
+            if ((detached = this->attach_created(&m_value))) {
+                mpz_init_set_ui(detached, initialValue);
+                return true;
+            }
         }
         return false;
     }
     virtual bool destroy() {
-        BIGNUM* detached = 0;
+        MP_INT* detached = 0;
         if ((detached = this->detach())) {
-            BN_free(detached);
+            mpz_clear(detached);
             return true;
         }
         return false;
     }
+
+protected:
+    MP_INT m_value;
 }; /// class numbert
 typedef numbert<> number;
 
-} /// namespace bn
+} /// namespace mp
 } /// namespace prime
 } /// namespace random
 } /// namespace crypto
 } /// namespace xos
 
-#endif /// XOS_CRYPTO_RANDOM_PRIME_BN_NUMBER_HPP
+#endif /// XOS_CRYPTO_RANDOM_PRIME_MP_NUMBER_HPP

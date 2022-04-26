@@ -16,24 +16,24 @@
 ///   File: reader.hpp
 ///
 /// Author: $author$
-///   Date: 4/22/2022
+///   Date: 4/25/2022
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_CRYPTO_RANDOM_PRIME_BN_READER_HPP
-#define XOS_CRYPTO_RANDOM_PRIME_BN_READER_HPP
+#ifndef XOS_CRYPTO_RANDOM_PRIME_MP_READER_HPP
+#define XOS_CRYPTO_RANDOM_PRIME_MP_READER_HPP
 
-#include "xos/crypto/random/prime/bn/license.hpp"
+#include "xos/crypto/random/prime/mp/license.hpp"
 #include "xos/crypto/random/prime/reader.hpp"
-#include "xos/crypto/random/prime/bn/number.hpp"
+#include "xos/crypto/random/prime/mp/number.hpp"
 
 namespace xos {
 namespace crypto {
 namespace random {
 namespace prime {
-namespace bn {
+namespace mp {
 
 /// class readert
 template 
-<class TNumber = xos::crypto::random::prime::bn::number,
+<class TNumber = xos::crypto::random::prime::mp::number,
  class TReaderImplement = xos::crypto::random::prime::readert<BIGPRIME>, 
  class TReaderObserver = typename TReaderImplement::observer,
  class TRandomReader = xos::crypto::random::reader,
@@ -49,7 +49,7 @@ public:
     typedef TReaderImplement reader_implement_t;
     typedef TReaderObserver reader_observer_t;
     typedef TRandomReader random_reader_t;
-
+    
     /// constructors / destructor
     readert(reader_observer_t* observer): m_observer(observer) {
     }
@@ -68,20 +68,18 @@ public:
     virtual ssize_t read_msb(number_t& n, size_t bytes, random_reader_t& random) {
         BIGPRIME* detached = 0;
         if ((detached = n.attached_to())) {
-            LOGGER_LOG_TRACE("read_msb(detached, bytes = " << unsigned_to_string(bytes) << ", random)...");            
             return read_msb(detached, bytes, random);
         }
         return 0;
     }
     virtual ssize_t read_msb(BIGPRIME* n, size_t bytes, random_reader_t& random) {
         byte_t byte = 0;
-        BN_set_word(n, 0);
+        mpz_set_ui(n, 0);
         for (size_t i=0; i<bytes; i++) {
-            if (0 >= (this->get(byte, random))) {
+            if (0 >= (this->get(byte, random)))
                 return 0;
-            }
-            BN_lshift(n,n,8);
-            BN_add_word(n,byte);
+            mpz_mul_2exp(n, n, 8);
+            mpz_add_ui(n, n, byte);
         }
         bytes = this->on_read(n, bytes);
         return bytes;
@@ -97,10 +95,10 @@ protected:
 }; /// class readert
 typedef readert<> reader;
 
-} /// namespace bn
+} /// namespace mp
 } /// namespace prime
 } /// namespace random
 } /// namespace crypto
 } /// namespace xos
 
-#endif /// XOS_CRYPTO_RANDOM_PRIME_BN_READER_HPP
+#endif /// XOS_CRYPTO_RANDOM_PRIME_MP_READER_HPP
