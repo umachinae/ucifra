@@ -89,6 +89,7 @@ $${UCIFRA_SRC}/xos/crypto/random/prime/mp/number.hpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/mp/reader.hpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/mp/miller_rabin.hpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/mp/generator.hpp \
+$${UCIFRA_SRC}/xos/crypto/rsa/mp/key_generator.hpp \
 \
 $${UCIFRA_SRC}/xos/crypto/rsa/key/implement.hpp \
 $${UCIFRA_SRC}/xos/crypto/rsa/key/extend.hpp \
@@ -139,7 +140,7 @@ $${UCIFRA_SRC}/xos/crypto/random/prime/mp/number.cpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/mp/reader.cpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/mp/miller_rabin.cpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/mp/generator.cpp \
-$${UCIFRA_SRC}/xos/crypto/rsa/bn/key_generator.cpp \
+$${UCIFRA_SRC}/xos/crypto/rsa/mp/key_generator.cpp \
 \
 $${UCIFRA_SRC}/xos/crypto/rsa/mp/key.cpp \
 $${UCIFRA_SRC}/xos/crypto/rsa/mp/public_key.cpp \
