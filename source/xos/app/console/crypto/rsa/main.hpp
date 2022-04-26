@@ -46,6 +46,7 @@
 #include "xos/crypto/random/prime/mp/reader.hpp"
 #include "xos/crypto/random/prime/mp/miller_rabin.hpp"
 #include "xos/crypto/random/prime/mp/generator.hpp"
+#include "xos/crypto/rsa/mp/key_generator.hpp"
 
 #define XOS_APP_CONSOLE_RSA_MODULUS_BITS 2048
 #define XOS_APP_CONSOLE_RSA_EXPONENT_BITS 24
@@ -180,6 +181,33 @@ protected:
             xos::crypto::rsa::bn::private_key prv(pbytes);
             bn_reader_observer_t observer(*this);
             xos::crypto::rsa::bn::key_generator generator(&observer);
+            
+            observer.clear_output();
+            if ((generator.generate(prv, pub, modbytes, exponent, expbytes, random))) {
+                
+                observer.clear_output();
+                if (!(err = output_generated_key_pair_run(pub, prv, argc, argv, env))) {
+                }
+            }
+        }
+        return err;
+    }
+
+    /// ...gmp_generate_key_pair_run
+    virtual int gmp_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t expbits = this->exponent_bits(), expbytes = ((expbits + 7) >> 3),
+               modbits = this->modulus_bits(), modbytes = ((modbits + 7) >> 3),
+               pbits = (modbits >> 1), pbytes = (modbytes >> 1);
+        crypto_array_t exponent_array(exponent_value_, expbytes);
+        byte_t* exponent = 0; size_t exponent_length = 0;
+        
+        if ((exponent = exponent_array.has_elements(exponent_length)) && (expbytes == exponent_length)) {
+            xos::crypto::pseudo::random::number::generator random;
+            xos::crypto::rsa::mp::public_key pub(modbytes, expbytes);
+            xos::crypto::rsa::mp::private_key prv(pbytes);
+            mp_reader_observer_t observer(*this);
+            xos::crypto::rsa::mp::key_generator generator(&observer);
             
             observer.clear_output();
             if ((generator.generate(prv, pub, modbytes, exponent, expbytes, random))) {
