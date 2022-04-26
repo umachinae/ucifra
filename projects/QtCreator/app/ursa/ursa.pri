@@ -55,6 +55,7 @@ XOS_CONSOLE_MAIN_MAIN \
 # ursa HEADERS
 #
 ursa_HEADERS += \
+$${UCIFRA_SRC}/xos/base/extended/creator.hpp \
 $${UCIFRA_SRC}/xos/base/array.hpp \
 $${UCIFRA_SRC}/xos/base/arrays.hpp \
 \
@@ -65,7 +66,29 @@ $${UCIFRA_SRC}/xos/io/hex/reader.hpp \
 $${UCIFRA_SRC}/xos/io/hex/read_to_array.hpp \
 $${UCIFRA_SRC}/xos/io/hex/read_to_arrays.hpp \
 \
-$${UCIFRA_SRC}/xos/crypto/output.hpp \
+$${UCIFRA_SRC}/xos/crypto/base.hpp \
+$${UCIFRA_SRC}/xos/crypto/array.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/reader.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/number/reader.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/reader.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/miller_rabin.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/number/generator.hpp \
+$${UCIFRA_SRC}/xos/crypto/pseudo/random/number/generator.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/small_primes.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/generator.hpp \
+\
+$${UCIFRA_SRC}/xos/crypto/random/prime/bn/license.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/bn/number.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/bn/reader.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/bn/miller_rabin.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/bn/generator.hpp \
+$${UCIFRA_SRC}/xos/crypto/rsa/bn/key_generator.hpp \
+\
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/license.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/number.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/reader.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/miller_rabin.hpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/generator.hpp \
 \
 $${UCIFRA_SRC}/xos/crypto/rsa/key/implement.hpp \
 $${UCIFRA_SRC}/xos/crypto/rsa/key/extend.hpp \
@@ -98,7 +121,8 @@ $${UCIFRA_SRC}/xos/app/console/crypto/rsa/main.hpp \
 # ursa SOURCES
 #
 ursa_SOURCES += \
-$${UCIFRA_SRC}/xos/base/array.cpp \
+$${UCIFRA_SRC}/xos/base/extended/creator.cpp \
+$${UCIFRA_SRC}/xos/crypto/array.cpp \
 $${UCIFRA_SRC}/xos/base/arrays.cpp \
 \
 $${UCIFRA_SRC}/xos/io/told.cpp \
@@ -106,7 +130,16 @@ $${UCIFRA_SRC}/xos/io/hex/reader.cpp \
 $${UCIFRA_SRC}/xos/io/hex/read_to_array.cpp \
 $${UCIFRA_SRC}/xos/io/hex/read_to_arrays.cpp \
 \
-$${UCIFRA_SRC}/xos/crypto/output.cpp \
+$${UCIFRA_SRC}/xos/crypto/base.cpp \
+$${UCIFRA_SRC}/xos/crypto/random/number/reader.cpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/small_primes.cpp \
+\
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/license.cpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/number.cpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/reader.cpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/miller_rabin.cpp \
+$${UCIFRA_SRC}/xos/crypto/random/prime/mp/generator.cpp \
+$${UCIFRA_SRC}/xos/crypto/rsa/bn/key_generator.cpp \
 \
 $${UCIFRA_SRC}/xos/crypto/rsa/mp/key.cpp \
 $${UCIFRA_SRC}/xos/crypto/rsa/mp/public_key.cpp \
