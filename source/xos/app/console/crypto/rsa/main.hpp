@@ -16,15 +16,24 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 4/14/2022
+///   Date: 4/14/2022, 5/12/2022
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_HPP
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_HPP
 
 #include "xos/app/console/crypto/rsa/main_opt.hpp"
 
+#if defined(XOS_APP_CONSOLE_CRYPTO_RSA_CLIENT_MAIN_OPT_HPP)
+#include "xos/app/console/crypto/rsa/client/key_pair.hpp"
+#else /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_CLIENT_MAIN_OPT_HPP)
+#if defined(XOS_APP_CONSOLE_CRYPTO_RSA_SERVER_MAIN_OPT_HPP)
+#include "xos/app/console/crypto/rsa/server/key_pair.hpp"
+#else /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_SERVER_MAIN_OPT_HPP)
+#include "xos/app/console/crypto/rsa/key_pair.hpp"
 #include "xos/app/console/crypto/rsa/public_key.hpp"
 #include "xos/app/console/crypto/rsa/private_key.hpp"
+#endif /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_SERVER_MAIN_OPT_HPP)
+#endif /// defined(XOS_APP_CONSOLE_CRYPTO_RSA_CLIENT_MAIN_OPT_HPP)
 
 #include "xos/crypto/rsa/bn/public_key.hpp"
 #include "xos/crypto/rsa/bn/private_key.hpp"
@@ -99,6 +108,8 @@ protected:
     typedef typename extends::byte_array_t byte_array_t;
     typedef typename extends::crypto_array_t crypto_array_t;
 
+    typedef typename extends::output_hex_verbage_sized_t output_hex_verbage_sized_t;
+    
     class exported bn_reader_observer_t
     : virtual public xos::crypto::random::prime::bn::reader::observer {
     friend class maint;
@@ -232,33 +243,46 @@ protected:
         byte_t *bytes = 0; size_t length = 0;
         
         if ((bytes = array.has_elements(length)) && (modbytes <= length)) {
+            bool const_0x_output = this->const_0x_output();
+            output_hex_verbage_sized_t output_hex_verbage_sized = 0;
 
+            if ((const_0x_output)) {
+                output_hex_verbage_sized = this->set_output_const_0x_verbage_sized();
+                this->outlln("#ifndef ", this->key_pair_define_chars(), null);
+                this->outlln("#define ", this->key_pair_define_chars(), null);
+                this->outln("");
+            }
             if (expbytes == (length = pub.get_exponent_msb(bytes, modbytes))) {
-                this->output_hex_verbage_sized("exponent", bytes, length);
+                this->output_hex_verbage_sized("rsa_public_exponent", bytes, length);
 
                 if (modbytes == (length = pub.get_modulus_msb(bytes, modbytes))) {
-                    this->output_hex_verbage_sized("modulus", bytes, length);
+                    this->output_hex_verbage_sized("rsa_public_modulus", bytes, length);
                     
                     if (pbytes == (length = prv.get_p_msb(bytes, pbytes))) {
-                        this->output_hex_verbage_sized("p", bytes, length);
+                        this->output_hex_verbage_sized("rsa_private_p", bytes, length);
                         
                         if (pbytes == (length = prv.get_q_msb(bytes, pbytes))) {
-                            this->output_hex_verbage_sized("q", bytes, length);
+                            this->output_hex_verbage_sized("rsa_private_q", bytes, length);
                             
                             if (pbytes == (length = prv.get_dmp1_msb(bytes, pbytes))) {
-                                this->output_hex_verbage_sized("dmp1", bytes, length);
+                                this->output_hex_verbage_sized("rsa_private_dmp1", bytes, length);
                                 
                                 if (pbytes == (length = prv.get_dmq1_msb(bytes, pbytes))) {
-                                    this->output_hex_verbage_sized("dmq1", bytes, length);
+                                    this->output_hex_verbage_sized("rsa_private_dmq1", bytes, length);
                                     
                                     if (pbytes == (length = prv.get_iqmp_msb(bytes, pbytes))) {
-                                        this->output_hex_verbage_sized("iqmp", bytes, length);
+                                        this->output_hex_verbage_sized("rsa_private_iqmp", bytes, length);
                                     }
                                 }
                             }
                         }
                     }
                 }
+            }
+            if ((const_0x_output)) {
+                this->outln("");
+                this->outlln("#endif /// ndef ", this->key_pair_define_chars(), null);
+                this->unset_output_0x_verbage_sized(output_hex_verbage_sized);
             }
         }
         return err;
@@ -526,20 +550,48 @@ protected:
             byte_t *plain = &this->rsa_plain(sizeof_plain);
 
             if ((plain_bytes = this->get_rsa_plain(plain_length)) && (plain_length)) {
-                size_t sizeof_cipher = 0;
-                byte_t *cipher = &this->rsa_cipher(sizeof_cipher);
+                size_t sizeof_encipher = 0, sizeof_decipher = 0;
+                byte_t *encipher = &this->rsa_encipher(sizeof_encipher), 
+                       *decipher = &this->rsa_decipher(sizeof_decipher);
 
                 if ((modbytes > plain_length)) {
                     size_t length = length = (modbytes - plain_length);
-                    ::memcpy(plain, plain_bytes, plain_length);
-                    ::memset(plain + plain_length, 0, length);
+                    ::memcpy(decipher, plain_bytes, plain_length);
+                    ::memset(decipher + plain_length, 0, length);
                 } else {
-                    ::memcpy(plain, plain_bytes, modbytes);
+                    ::memcpy(decipher, plain_bytes, modbytes);
                 }
-                if (modbytes == (size = pub(cipher, sizeof_cipher, plain, modbytes))) {
-                    this->output_hex_verbage_sized("cipher", cipher, size);
+                this->output_hex_verbage_sized("plain", decipher, modbytes);
+                if (modbytes == (size = pub(encipher, sizeof_encipher, decipher, modbytes))) {
+                    this->output_hex_verbage_sized("cipher", encipher, size);
                 }
             }
+        }
+        return err;
+    }
+    virtual int bn_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_length = 0, exponent_length = 0;
+        const byte_t *modulus = 0, *exponent = 0;
+
+        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length) 
+            && (exponent = this->get_exponent(exponent_length)) && (exponent_length)) {
+            xos::crypto::rsa::bn::public_key pub(modulus, modulus_length,exponent, exponent_length);
+
+            err = rsa_public_decrypt_run(pub, argc, argv, env);
+        }
+        return err;
+    }
+    virtual int gmp_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modulus_length = 0, exponent_length = 0;
+        const byte_t *modulus = 0, *exponent = 0;
+
+        if ((modulus = this->get_modulus(modulus_length)) && (modulus_length) 
+            && (exponent = this->get_exponent(exponent_length)) && (exponent_length)) {
+            xos::crypto::rsa::mp::public_key pub(modulus, modulus_length,exponent, exponent_length);
+
+            err = rsa_public_decrypt_run(pub, argc, argv, env);
         }
         return err;
     }
@@ -554,17 +606,19 @@ protected:
             byte_t *cipher = &this->rsa_cipher(sizeof_cipher);
 
             if ((cipher_bytes = this->get_rsa_cipher(cipher_length)) && (cipher_length)) {
-                size_t sizeof_decipher = 0;
-                byte_t *decipher = &this->rsa_decipher(sizeof_decipher);
+                size_t sizeof_decipher = 0, sizeof_encipher = 0;
+                byte_t *decipher = &this->rsa_decipher(sizeof_decipher), 
+                       *encipher = &this->rsa_encipher(sizeof_encipher);
 
                 if ((modbytes > cipher_length)) {
                     size_t length = length = (modbytes - cipher_length);
-                    ::memcpy(cipher, cipher_bytes, cipher_length);
-                    ::memset(cipher + cipher_length, 0, length);
+                    ::memcpy(encipher, cipher_bytes, cipher_length);
+                    ::memset(encipher + cipher_length, 0, length);
                 } else {
-                    ::memcpy(cipher, cipher_bytes, modbytes);
+                    ::memcpy(encipher, cipher_bytes, modbytes);
                 }
-                if (modbytes == (size = pub(decipher, sizeof_decipher, cipher, modbytes))) {
+                this->output_hex_verbose_sized("cipher",encipher, modbytes);
+                if (modbytes == (size = pub(decipher, sizeof_decipher, encipher, modbytes))) {
                     this->output_hex_verbage_sized("plain", decipher, size);
                 }
             }
@@ -613,20 +667,46 @@ protected:
             byte_t *plain = &this->rsa_plain(sizeof_plain);
 
             if ((plain_bytes = this->get_rsa_plain(plain_length)) && (plain_length)) {
-                size_t sizeof_cipher = 0;
-                byte_t *cipher = &this->rsa_cipher(sizeof_cipher);
+                size_t sizeof_encipher = 0, sizeof_decipher = 0;
+                byte_t *encipher = &this->rsa_encipher(sizeof_encipher),
+                       *decipher = &this->rsa_decipher(sizeof_decipher);
 
                 if ((modbytes > plain_length)) {
                     size_t length = length = (modbytes - plain_length);
-                    ::memcpy(plain, plain_bytes, plain_length);
-                    ::memset(plain + plain_length, 0, length);
+                    ::memcpy(decipher, plain_bytes, plain_length);
+                    ::memset(decipher + plain_length, 0, length);
                 } else {
-                    ::memcpy(plain, plain_bytes, modbytes);
+                    ::memcpy(decipher, plain_bytes, modbytes);
                 }
-                if (modbytes == (size = prv(cipher, sizeof_cipher, plain, modbytes))) {
-                    this->output_hex_verbage_sized("cipher", cipher, size);
+                this->output_hex_verbose_sized("plain", decipher, modbytes);
+                if (modbytes == (size = prv(encipher, sizeof_encipher, decipher, modbytes))) {
+                    this->output_hex_verbage_sized("cipher", encipher, size);
                 }
             }
+        }
+        return err;
+    }
+    virtual int bn_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t p_length = 0;
+        const byte_t *p = 0, *q = 0, *dmp1 = 0, *dmq1 = 0, *iqmp = 0;
+
+        if ((p = this->get_p(q, dmp1, dmq1, iqmp, p_length)) && (p_length)) {
+            xos::crypto::rsa::bn::private_key prv(p, q, dmp1, dmq1, iqmp, p_length);
+
+            err = rsa_private_decrypt_run(prv, argc, argv, env);
+        }
+        return err;
+    }
+    virtual int gmp_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t p_length = 0;
+        const byte_t *p = 0, *q = 0, *dmp1 = 0, *dmq1 = 0, *iqmp = 0;
+
+        if ((p = this->get_p(q, dmp1, dmq1, iqmp, p_length)) && (p_length)) {
+            xos::crypto::rsa::mp::private_key prv(p, q, dmp1, dmq1, iqmp, p_length);
+
+            err = rsa_private_decrypt_run(prv, argc, argv, env);
         }
         return err;
     }
@@ -641,17 +721,19 @@ protected:
             byte_t *cipher = &this->rsa_cipher(sizeof_cipher);
 
             if ((cipher_bytes = this->get_rsa_cipher(cipher_length)) && (cipher_length)) {
-                size_t sizeof_decipher = 0;
-                byte_t *decipher = &this->rsa_decipher(sizeof_decipher);
+                size_t sizeof_decipher = 0, sizeof_encipher = 0;
+                byte_t *decipher = &this->rsa_decipher(sizeof_decipher),
+                       *encipher = &this->rsa_encipher(sizeof_encipher);
 
                 if ((modbytes > cipher_length)) {
                     size_t length = length = (modbytes - cipher_length);
-                    ::memcpy(cipher, cipher_bytes, cipher_length);
-                    ::memset(cipher + cipher_length, 0, length);
+                    ::memcpy(encipher, cipher_bytes, cipher_length);
+                    ::memset(encipher + cipher_length, 0, length);
                 } else {
-                    ::memcpy(cipher, cipher_bytes, modbytes);
+                    ::memcpy(encipher, cipher_bytes, modbytes);
                 }
-                if (modbytes == (size = prv(decipher, sizeof_decipher, cipher, modbytes))) {
+                this->output_hex_verbose_sized("cipher", encipher, modbytes);
+                if (modbytes == (size = prv(decipher, sizeof_decipher, encipher, modbytes))) {
                     this->output_hex_verbage_sized("plain", decipher, size);
                 }
             }
@@ -862,10 +944,32 @@ protected:
         int err = 0;
         size_t length = 0;
         const byte_t *bytes = 0;
+
         if ((bytes = get_exponent(length)) && (length)) {
-            this->output_hex_verbage_sized("public_exponent", bytes, length);
+            bool const_0x_output = this->const_0x_output();
+            output_hex_verbage_sized_t output_hex_verbage_sized = 0;
+
+            if ((const_0x_output)) {
+                output_hex_verbage_sized = this->set_output_const_0x_verbage_sized();
+                this->outlln("#ifndef ", this->public_key_define_chars(), null);
+                this->outlln("#define ", this->public_key_define_chars(), null);
+                this->outln("");
+                this->outln("///");
+                this->outln("/// public");
+                this->outln("/// ...");
+            }
+            this->output_hex_verbage_sized("rsa_public_exponent", bytes, length);
+
             if ((bytes = get_modulus(length)) && (length)) {
-                this->output_hex_verbage_sized("public_modulus", bytes, length);
+                this->output_hex_verbage_sized("rsa_public_modulus", bytes, length);
+            }
+            if ((const_0x_output)) {
+                this->outln("/// ...");
+                this->outln("/// public");
+                this->outln("///");
+                this->outln("");
+                this->outlln("#endif /// ndef ", this->public_key_define_chars(), null);
+                this->unset_output_0x_verbage_sized(output_hex_verbage_sized);
             }
         }
         return err;
@@ -876,18 +980,90 @@ protected:
         const byte_t *bytes = 0;
         const byte_t *q = 0, *dmp1 = 0, *dmq1 = 0, *iqmp = 0;
         if ((bytes = get_p(q, dmp1, dmq1, iqmp, length)) && (length)) {
-            this->output_hex_verbage_sized("private_p", bytes, length);
-            this->output_hex_verbage_sized("private_q", q, length);
-            this->output_hex_verbage_sized("private_dmp1", dmp1, length);
-            this->output_hex_verbage_sized("private_dmq1", dmq1, length);
-            this->output_hex_verbage_sized("private_iqmp", iqmp, length);
+            bool const_0x_output = this->const_0x_output();
+            output_hex_verbage_sized_t output_hex_verbage_sized = 0;
+
+            if ((const_0x_output)) {
+                output_hex_verbage_sized = this->set_output_const_0x_verbage_sized();
+                this->outlln("#ifndef ", this->private_key_define_chars(), null);
+                this->outlln("#define ", this->private_key_define_chars(), null);
+                this->outln("");
+                this->outln("///");
+                this->outln("/// private");
+                this->outln("/// ...");
+            }
+            this->output_hex_verbage_sized("rsa_private_p", bytes, length);
+            this->output_hex_verbage_sized("rsa_private_q", q, length);
+            this->output_hex_verbage_sized("rsa_private_dmp1", dmp1, length);
+            this->output_hex_verbage_sized("rsa_private_dmq1", dmq1, length);
+            this->output_hex_verbage_sized("rsa_private_iqmp", iqmp, length);
+
+            if ((const_0x_output)) {
+                this->outln("/// ...");
+                this->outln("/// private");
+                this->outln("///");
+                this->outln("");
+                this->outlln("#endif /// ndef ", this->private_key_define_chars(), null);
+                this->unset_output_0x_verbage_sized(output_hex_verbage_sized);
+            }
         }
         return err;
     }
     virtual int default_output_get_key_pair_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        if (!(err = default_output_get_public_key_run(argc, argv, env))) {
-            if (!(err = default_output_get_private_key_run(argc, argv, env))) {
+        size_t length = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = get_exponent(length)) && (length)) {
+            bool const_0x_output = this->const_0x_output();
+            output_hex_verbage_sized_t output_hex_verbage_sized = 0;
+
+            if ((const_0x_output)) {
+                output_hex_verbage_sized = this->set_output_const_0x_verbage_sized();
+                this->outlln("#ifndef ", this->key_pair_define_chars(), null);
+                this->outlln("#define ", this->key_pair_define_chars(), null);
+                this->outln("");
+            }
+            if ((const_0x_output)) {
+                this->outln("///");
+                this->outln("/// public");
+                this->outln("/// ...");
+            }
+            this->output_hex_verbage_sized("rsa_public_exponent", bytes, length);
+
+            if ((bytes = get_modulus(length)) && (length)) {
+                const byte_t *q = 0, *dmp1 = 0, *dmq1 = 0, *iqmp = 0;
+                this->output_hex_verbage_sized("rsa_public_modulus", bytes, length);
+
+                if ((const_0x_output)) {
+                    this->outln("/// ...");
+                    this->outln("/// public");
+                    this->outln("///");
+                }
+                if ((bytes = get_p(q, dmp1, dmq1, iqmp, length)) && (length)) {
+                    if ((const_0x_output)) {
+                        this->outln("");
+                        this->outln("///");
+                        this->outln("/// private");
+                        this->outln("/// ...");
+                    }
+                    this->output_hex_verbage_sized("rsa_private_p", bytes, length);
+                    this->output_hex_verbage_sized("rsa_private_q", q, length);
+                    this->output_hex_verbage_sized("rsa_private_dmp1", dmp1, length);
+                    this->output_hex_verbage_sized("rsa_private_dmq1", dmq1, length);
+                    this->output_hex_verbage_sized("rsa_private_iqmp", iqmp, length);
+        
+                    if ((const_0x_output)) {
+                        this->outln("/// ...");
+                        this->outln("/// private");
+                        this->outln("///");
+                    }
+                }
+            }
+            if ((const_0x_output)) {
+                this->outln("");
+                this->outlln("#endif /// ndef ", this->key_pair_define_chars(), null);
+                this->unset_output_0x_verbage_sized(output_hex_verbage_sized);
             }
         }
         return err;
@@ -909,7 +1085,7 @@ protected:
             size_t size = 0, sizeof_plain = 0;
             byte_t *plain = &this->rsa_plain(sizeof_plain);
             
-            if (modbytes == (size = this->random(plain, modbytes))) {
+            if (modbytes == (size = this->random_plain(plain, modbytes))) {
                 this->output_hex_verbage_sized("plain", plain, size);
             }
         }
@@ -951,7 +1127,7 @@ protected:
             size_t sizeof_plain = 0;
             byte_t *plain = &this->rsa_plain(sizeof_plain);
 
-            if ((size = this->random(plain, modbytes))) {
+            if ((size = this->random_plain(plain, modbytes))) {
                 size_t sizeof_cipher = 0;
                 byte_t *cipher = &this->rsa_cipher(sizeof_cipher);
 
@@ -965,14 +1141,14 @@ protected:
     virtual int default_output_test_public_exponent_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         this->output_hex_verbage_sized
-        ("public_exponent",::xos::app::console::crypto::rsa::rsa_public_exponent, 
+        ("rsa_public_exponent",::xos::app::console::crypto::rsa::rsa_public_exponent, 
          sizeof(::xos::app::console::crypto::rsa::rsa_public_exponent));
         return err;
     }
     virtual int default_output_test_public_modulus_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         this->output_hex_verbage_sized
-        ("public_modulus",::xos::app::console::crypto::rsa::rsa_public_modulus, 
+        ("rsa_public_modulus",::xos::app::console::crypto::rsa::rsa_public_modulus, 
          sizeof(::xos::app::console::crypto::rsa::rsa_public_modulus));
         return err;
     }
@@ -987,19 +1163,19 @@ protected:
     virtual int default_output_test_private_key_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         this->output_hex_verbage_sized
-        ("private_p", ::xos::app::console::crypto::rsa::rsa_private_p, 
+        ("rsa_private_p", ::xos::app::console::crypto::rsa::rsa_private_p, 
          sizeof(::xos::app::console::crypto::rsa::rsa_private_p));
         this->output_hex_verbage_sized
-        ("private_q", ::xos::app::console::crypto::rsa::rsa_private_q, 
+        ("rsa_private_q", ::xos::app::console::crypto::rsa::rsa_private_q, 
          sizeof(::xos::app::console::crypto::rsa::rsa_private_q));
         this->output_hex_verbage_sized
-        ("private_dmp1", ::xos::app::console::crypto::rsa::rsa_private_dmp1, 
+        ("rsa_private_dmp1", ::xos::app::console::crypto::rsa::rsa_private_dmp1, 
          sizeof(::xos::app::console::crypto::rsa::rsa_private_dmp1));
         this->output_hex_verbage_sized
-        ("private_dmq1", ::xos::app::console::crypto::rsa::rsa_private_dmq1, 
+        ("rsa_private_dmq1", ::xos::app::console::crypto::rsa::rsa_private_dmq1, 
          sizeof(::xos::app::console::crypto::rsa::rsa_private_dmq1));
         this->output_hex_verbage_sized
-        ("private_iqmp", ::xos::app::console::crypto::rsa::rsa_private_iqmp, 
+        ("rsa_private_iqmp", ::xos::app::console::crypto::rsa::rsa_private_iqmp, 
          sizeof(::xos::app::console::crypto::rsa::rsa_private_iqmp));
         return err;
     }
@@ -1297,9 +1473,9 @@ protected:
         if ((modulus = this->get_modulus(modbytes)) && (modbytes)
             && (modbytes >= modbytes_min) && (modbytes <= modbytes_max)) {
             size_t size = 0, sizeof_plain = 0;
-            byte_t *plain = &this->rsa_decipher(sizeof_plain);
+            byte_t *plain = &this->rsa_random(sizeof_plain);
             
-            if (modbytes == (size = this->random(plain, modbytes))) {
+            if (modbytes == (size = this->random_plain(plain, modbytes))) {
                 length = size;
                 bytes = plain;
             }
@@ -1339,7 +1515,7 @@ protected:
         if ((modulus = this->get_modulus(modbytes)) && (modbytes)
             && (modbytes >= modbytes_min) && (modbytes <= modbytes_max)) {
             size_t size = 0, sizeof_cipher = 0;
-            byte_t *cipher = &this->rsa_plain(sizeof_cipher);
+            byte_t *cipher = &this->rsa_random(sizeof_cipher);
             
             if (modbytes == (size = this->random(cipher, modbytes))) {
                 length = size;
@@ -1374,9 +1550,17 @@ protected:
         size = sizeof(rsa_cipher_);
         return (byte_t&)(rsa_cipher_[0]);
     }
+    virtual byte_t& rsa_encipher(size_t& size) const {
+        size = sizeof(rsa_encipher_);
+        return (byte_t&)(rsa_encipher_[0]);
+    }
     virtual byte_t& rsa_decipher(size_t& size) const {
         size = sizeof(rsa_decipher_);
         return (byte_t&)(rsa_decipher_[0]);
+    }
+    virtual byte_t& rsa_random(size_t& size) const {
+        size = sizeof(rsa_random_);
+        return (byte_t&)(rsa_random_[0]);
     }
 
     /// ...exponent...
@@ -1409,10 +1593,16 @@ protected:
         modbytes_min = 512/8,
         modbytes_max = 4096/8
     };
+
     uint32_t exponent_value_;
     size_t exponent_bits_, modulus_bits_;
-    byte_array_t exponent_, modulus_, p_, q_, dmp1_, dmq1_, iqmp_, rsa_plain_array_, rsa_cipher_array_;
-    byte_t rsa_plain_[modbytes_max], rsa_cipher_[modbytes_max], rsa_decipher_[modbytes_max];
+
+    byte_array_t exponent_, modulus_, 
+                 p_, q_, dmp1_, dmq1_, iqmp_, 
+                 rsa_plain_array_, rsa_cipher_array_;
+
+    byte_t rsa_plain_[modbytes_max], rsa_cipher_[modbytes_max], 
+           rsa_encipher_[modbytes_max], rsa_decipher_[modbytes_max], rsa_random_[modbytes_max];
 }; /// class maint
 typedef maint<> main;
 

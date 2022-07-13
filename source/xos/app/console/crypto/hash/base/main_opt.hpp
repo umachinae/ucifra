@@ -804,10 +804,10 @@ protected:
             err = this->on_base64_option(optval, optarg, optname, optind, argc, argv, env);
             break;
         case XOS_APP_CONSOLE_CRYPTO_HASH_BASE_MAIN_UPPER_OPTVAL_C:
-            err = this->on_upper_option(optval, optarg, optname, optind, argc, argv, env);
+            err = this->on_upper_hex_option(optval, optarg, optname, optind, argc, argv, env);
             break;
         case XOS_APP_CONSOLE_CRYPTO_HASH_BASE_MAIN_LOWER_OPTVAL_C:
-            err = this->on_lower_option(optval, optarg, optname, optind, argc, argv, env);
+            err = this->on_lower_hex_option(optval, optarg, optname, optind, argc, argv, env);
             break;
         default:
             err = extends::on_option(optval, optarg, optname, optind, argc, argv, env);

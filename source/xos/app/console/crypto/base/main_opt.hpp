@@ -16,7 +16,7 @@
 ///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 2/21/2022
+///   Date: 2/21/2022, 5/28/2022
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPT_HPP
@@ -62,37 +62,50 @@
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_BASE64_OPTARG_RESULT, \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_BASE64_OPTVAL_C}, \
 
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPT "X"
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTARG_RESULT 0
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTARG ""
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTUSE "uppercase hex cipher io"
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_S "X"
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_C 'X'
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTION \
-   {XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPT, \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTARG_REQUIRED, \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTARG_RESULT, \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_C}, \
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPT "0x"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTARG_RESULT 0
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTARG ""
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTUSE "0x hex cipher io"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTVAL_S "0"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTVAL_C '0'
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTION \
+   {XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPT, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTARG_REQUIRED, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTARG_RESULT, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTVAL_C}, \
 
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPT "x"
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTARG_RESULT 0
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTARG ""
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTUSE "lowercase hex cipher io"
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_S "x"
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_C 'x'
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTION \
-   {XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPT, \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTARG_REQUIRED, \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTARG_RESULT, \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_C}, \
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPT "X"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTARG_RESULT 0
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTARG ""
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTUSE "uppercase hex cipher io"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_S "X"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_C 'X'
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTION \
+   {XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPT, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTARG_REQUIRED, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTARG_RESULT, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_C}, \
+
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPT "x"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTARG_RESULT 0
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTARG ""
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTUSE "lowercase hex cipher io"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_S "x"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_C 'x'
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTION \
+   {XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPT, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTARG_REQUIRED, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTARG_RESULT, \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_C}, \
 
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPT "text"
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTARG ""
-#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTUSE "text output"
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTUSE "text plain output"
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTVAL_S "t"
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTVAL_C 't'
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTION \
@@ -118,8 +131,8 @@
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_PLAIN_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_CIPHER_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_BASE64_OPTVAL_S \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_S \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_NO_LINE_OPTVAL_S \
 
@@ -127,11 +140,12 @@
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_PLAIN_OPTION \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_CIPHER_OPTION \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_BASE64_OPTION \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTION \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTION \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTION \
     XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_NO_LINE_OPTION \
 
+///////////////////////////////////////////////////////////////////////
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPTIONS_CHARS \
    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPTIONS_CHARS_EXTEND \
    XOS_APP_CONSOLE_UCIFRA_MAIN_OPTIONS_CHARS
@@ -140,6 +154,16 @@
    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
    XOS_APP_CONSOLE_UCIFRA_MAIN_OPTIONS_OPTIONS
 
+///////////////////////////////////////////////////////////////////////
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOGGING_OPTIONS_CHARS \
+   XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPTIONS_CHARS_EXTEND \
+   XOS_APP_CONSOLE_UCIFRA_MAIN_LOGGING_OPTIONS_CHARS
+
+#define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOGGING_OPTIONS_OPTIONS \
+   XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
+   XOS_APP_CONSOLE_UCIFRA_MAIN_LOGGING_OPTIONS_OPTIONS
+
+///////////////////////////////////////////////////////////////////////
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_ARGS "[source]"
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_ARGV "[source] plain/cipher source",
 
@@ -435,22 +459,19 @@ protected:
         return chars;
     }
 
-    virtual int on_upper_option
+    virtual int on_Ox_hex_option
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        if ((optarg) && (optarg[0])) {
-        } else {
-        }
         return err;
     }
-    virtual const char_t* upper_option_usage(const char_t*& optarg, const struct option* longopt) {
-        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTUSE;
-        optarg = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTARG;
+    virtual const char_t* Ox_hex_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTUSE;
+        optarg = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTARG;
         return chars;
     }
 
-    virtual int on_lower_option
+    virtual int on_upper_hex_option
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
@@ -459,9 +480,24 @@ protected:
         }
         return err;
     }
-    virtual const char_t* lower_option_usage(const char_t*& optarg, const struct option* longopt) {
-        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTUSE;
-        optarg = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTARG;
+    virtual const char_t* upper_hex_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTUSE;
+        optarg = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTARG;
+        return chars;
+    }
+
+    virtual int on_lower_hex_option
+    (int optval, const char_t* optarg, const char_t* optname,
+     int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+        } else {
+        }
+        return err;
+    }
+    virtual const char_t* lower_hex_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTUSE;
+        optarg = XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTARG;
         return chars;
     }
 
@@ -506,18 +542,23 @@ protected:
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_CIPHER_OPTVAL_C:
             err = this->on_cipher_option(optval, optarg, optname, optind, argc, argv, env);
             break;
+
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_BASE64_OPTVAL_C:
             err = this->on_base64_option(optval, optarg, optname, optind, argc, argv, env);
             break;
-        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_C:
-            err = this->on_upper_option(optval, optarg, optname, optind, argc, argv, env);
+        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTVAL_C:
+            err = this->on_Ox_hex_option(optval, optarg, optname, optind, argc, argv, env);
             break;
-        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_C:
-            err = this->on_lower_option(optval, optarg, optname, optind, argc, argv, env);
+        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_C:
+            err = this->on_upper_hex_option(optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_C:
+            err = this->on_lower_hex_option(optval, optarg, optname, optind, argc, argv, env);
             break;
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTVAL_C:
             err = this->on_text_option(optval, optarg, optname, optind, argc, argv, env);
             break;
+
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_NO_LINE_OPTVAL_C:
             err = this->on_no_line_option(optval, optarg, optname, optind, argc, argv, env);
             break;
@@ -535,18 +576,23 @@ protected:
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_CIPHER_OPTVAL_C:
             chars = this->cipher_option_usage(optarg, longopt);
             break;
+
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_BASE64_OPTVAL_C:
             chars = this->base64_option_usage(optarg, longopt);
             break;
-        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_C:
-            chars = this->upper_option_usage(optarg, longopt);
+        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTVAL_C:
+            chars = this->Ox_hex_option_usage(optarg, longopt);
             break;
-        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_C:
-            chars = this->lower_option_usage(optarg, longopt);
+        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_C:
+            chars = this->upper_hex_option_usage(optarg, longopt);
+            break;
+        case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_C:
+            chars = this->lower_hex_option_usage(optarg, longopt);
             break;
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_TEXT_OPTVAL_C:
             chars = this->text_option_usage(optarg, longopt);
             break;
+
         case XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_NO_LINE_OPTVAL_C:
             chars = this->no_line_option_usage(optarg, longopt);
             break;

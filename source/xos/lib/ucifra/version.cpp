@@ -16,7 +16,7 @@
 ///   File: version.cpp
 ///
 /// Author: $author$
-///   Date: 1/26/2022
+///   Date: 3/31/2022
 ///////////////////////////////////////////////////////////////////////
 #include "xos/lib/ucifra/version.hpp"
 
@@ -36,12 +36,20 @@
 #define XOS_LIB_UCIFRA_VERSION_RELEASE 0
 #endif /// !defined(XOS_LIB_UCIFRA_VERSION_RELEASE)
 
+#if !defined(XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX)
+///#define XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX   
+#endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX)
+
 #if !defined(XOS_LIB_UCIFRA_VERSION_BUILD_DATE)
-#define XOS_LIB_UCIFRA_VERSION_BUILD_DATE   1/26/2022
+#define XOS_LIB_UCIFRA_VERSION_BUILD_DATE   3/31/2022
 #endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD_DATE)
 
 #if !defined(XOS_LIB_UCIFRA_VERSION_BUILD)
+#if !defined(XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX)
 #define XOS_LIB_UCIFRA_VERSION_BUILD   XOS_LIB_UCIFRA_VERSION_BUILD_DATE
+#else /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX)
+#define XOS_LIB_UCIFRA_VERSION_BUILD   XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX-XOS_LIB_UCIFRA_VERSION_BUILD_DATE
+#endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD_PREFIX)
 #endif /// !defined(XOS_LIB_UCIFRA_VERSION_BUILD)
 
 #if !defined(XOS_LIB_UCIFRA_VERSION_BUILD_CHARS)

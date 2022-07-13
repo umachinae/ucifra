@@ -16,7 +16,7 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 2/21/2022
+///   Date: 2/21/2022, 4/28/2022
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_HPP
 #define XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_HPP
@@ -54,7 +54,8 @@ public:
     maint()
     : run_(0), 
       input_x_(0), output_x_(0), output_x_ln_(true), 
-      output_hex_(0), output_hex_x_(0) {
+      output_hex_nextln_('\\'), output_hex_cols_(32), output_hex_(0), output_hex_x_(0), 
+      output_0x_nextln_(","), output_0x_next_(", "), output_0x_cols_(16), output_0x_(0), output_0x_x_(0) {
     }
     virtual ~maint() {
     }
@@ -154,6 +155,38 @@ protected:
         }
         return err;
     }
+    int (derives::*Ox_output_x_)(const void* block, size_t length);
+    virtual int Ox_output_x(const void* block, size_t length) {
+        int err = 0;
+        if ((this->Ox_output_x_)) {
+            err = (this->*Ox_output_x_)(block, length);
+        } else {
+            err = lower_0x_output_x(block, length);
+        }
+        return err;
+    }
+    virtual int upper_0x_output_x(const void* block, size_t length) {
+        int err = 0;
+        if ((block) && (length)) {
+            if (output_x_ln()) {
+                this->out0Xln(block, length);
+            } else {
+                this->out0X(block, length);
+            }
+        }
+        return err;
+    }
+    virtual int lower_0x_output_x(const void* block, size_t length) {
+        int err = 0;
+        if ((block) && (length)) {
+            if (output_x_ln()) {
+                this->out0xln(block, length);
+            } else {
+                this->out0x(block, length);
+            }
+        }
+        return err;
+    }
     virtual int upper_output_x(const void* block, size_t length) {
         int err = 0;
         if ((block) && (length)) {
@@ -213,6 +246,21 @@ protected:
         output_x_ = &derives::base64_output_x;
         return err;
     }
+    virtual int set_0x_output_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        output_x_ = &derives::Ox_output_x;
+        return err;
+    }
+    virtual int set_upper_0x_output_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        Ox_output_x_ = &derives::upper_0x_output_x;
+        return err;
+    }
+    virtual int set_lower_0x_output_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        Ox_output_x_ = &derives::lower_0x_output_x;
+        return err;
+    }
     virtual int set_upper_output_x(int argc, char_t** argv, char_t** env) {
         int err = 0;
         input_x_ = &derives::upper_input_x;
@@ -262,6 +310,7 @@ protected:
     }
 
     /// ...output_hex
+    char_t output_hex_nextln_; size_t output_hex_cols_;
     int (derives::*output_hex_)(const void* out, size_t len);
     virtual int output_hex(const void* out, size_t len) {
         int err = 0;
@@ -277,8 +326,8 @@ protected:
         const byte_t *bytes = 0;
 
         if ((bytes = ((const byte_t*)out)) && (len)) {
-            size_t cols = 32, col = 0;
-            char_t nextln = '\\';
+            char_t nextln = output_hex_nextln_;
+            size_t cols = output_hex_cols_, col = 0;
 
             for (col = 0; len; --len, ++bytes, ++col) {
                 if (cols <= (col)) {
@@ -330,6 +379,79 @@ protected:
         return err;
     }
 
+    /// ...output_0x
+    string_t output_0x_nextln_, output_0x_next_; size_t output_0x_cols_;
+    int (derives::*output_0x_)(const void* out, size_t len);
+    virtual int output_0x(const void* out, size_t len) {
+        int err = 0;
+        if (output_0x_) {
+            err = (this->*output_0x_)(out, len);
+        } else {
+            err = default_output_0x(out, len);
+        }
+        return err;
+    }
+    virtual int default_output_0x(const void* out, size_t len) {
+        int err = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = ((const byte_t*)out)) && (len)) {
+            const string_t &next = output_0x_next_, &nextln = output_0x_nextln_;
+            size_t cols = output_0x_cols_, col = 0;
+
+            this->output_0x_x(bytes, 1);
+            for (col = 1, ++bytes, --len; len; --len, ++bytes, ++col) {
+                if (cols <= (col)) {
+                    this->outln(nextln);
+                    col = 0;
+                } else {
+                    this->out(next);
+                }
+                this->output_0x_x(bytes, 1);
+            }
+            this->outln();
+        }
+        return err;
+    }
+    int (derives::*output_0x_x_)(const void* out, size_t len);
+    virtual int output_0x_x(const void* out, size_t len) {
+        int err = 0;
+        if (output_0x_x_) {
+            err = (this->*output_0x_x_)(out, len);
+        } else {
+            err = lower_output_0x_x(out, len);
+        }
+        return err;
+    }
+    virtual int lower_output_0x_x(const void* out, size_t len) {
+        int err = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = ((const byte_t*)out)) && (len)) {
+            this->out0x(bytes, len);
+        }
+        return err;
+    }
+    virtual int upper_output_0x_x(const void* out, size_t len) {
+        int err = 0;
+        const byte_t *bytes = 0;
+
+        if ((bytes = ((const byte_t*)out)) && (len)) {
+            this->out0X(bytes, len);
+        }
+        return err;
+    }
+    virtual int set_lower_output_0x_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        output_0x_x_ = &derives::lower_output_0x_x;
+        return err;
+    }
+    virtual int set_upper_output_0x_x(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        output_0x_x_ = &derives::upper_output_0x_x;
+        return err;
+    }
+
     /// on...option
     virtual int on_set_plain_option
     (int optval, const char_t* optarg,
@@ -364,24 +486,48 @@ protected:
         }
         return err;
     }
-    virtual int on_upper_option
+    virtual int on_set_Ox_hex_option
+    (int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        return err;
+    }
+    virtual int on_Ox_hex_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if (!(err = this->set_0x_output_x(argc, argv, env))) {
+            if (!(err = this->on_set_Ox_hex_option(optind, argc, argv, env))) {
+            }
+        }
+        return err;
+    }
+    virtual int on_upper_hex_option
     (int optval, const char_t* optarg,
      const char_t* optname, int optind,
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         if (!(err = this->set_upper_output_x(argc, argv, env))) {
-            if (!(err = this->set_upper_output_hex_x(argc, argv, env))) {
+            if (!(err = this->set_upper_output_0x_x(argc, argv, env))) {
+                if (!(err = this->set_upper_output_hex_x(argc, argv, env))) {
+                    if (!(err = this->set_upper_0x_output_x(argc, argv, env))) {
+                    }
+                }
             }
         }
         return err;
     }
-    virtual int on_lower_option
+    virtual int on_lower_hex_option
     (int optval, const char_t* optarg,
      const char_t* optname, int optind,
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         if (!(err = this->set_lower_output_x(argc, argv, env))) {
-            if (!(err = this->set_lower_output_hex_x(argc, argv, env))) {
+            if (!(err = this->set_lower_output_0x_x(argc, argv, env))) {
+                if (!(err = this->set_lower_output_hex_x(argc, argv, env))) {
+                    if (!(err = this->set_lower_0x_output_x(argc, argv, env))) {
+                    }
+                }
             }
         }
         return err;

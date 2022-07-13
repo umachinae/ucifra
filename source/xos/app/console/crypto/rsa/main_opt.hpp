@@ -33,8 +33,8 @@
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTARG "[string]"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTUSE "plain text to encrypt"
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTVAL_S "a::"
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTVAL_C 'a'
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTVAL_S "p::"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTVAL_C 'p'
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTION \
    {XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPT, \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PLAIN_TEXT_OPTARG_REQUIRED, \
@@ -145,13 +145,13 @@
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTARG_RESULT, \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_KEY_PAIR_OPTVAL_C}, \
 
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPT "generate-prime"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPT "random-prime"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG ""
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTUSE "generate random prime"
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_S "p"
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_C 'p'
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTUSE "random prime"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_S "a"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTVAL_C 'a'
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTION \
    {XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPT, \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GENERATE_PRIME_OPTARG_REQUIRED, \
@@ -162,7 +162,7 @@
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTARG ""
-#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTUSE "generate random number"
+#define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTUSE "pseudo random"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_S "s"
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTVAL_C 's'
 #define XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_PSEUDO_RANDOM_OPTION \
@@ -293,8 +293,9 @@
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MODULUS_BYTES_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_BN_INTEGER_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GMP_INTEGER_OPTVAL_S \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTVAL_S \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTVAL_S \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTVAL_S \
      XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_VERBOSE_OPTVAL_S \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_QUIET_OPTVAL_S \
 
@@ -316,8 +317,9 @@
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_MODULUS_BYTES_OPTION \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_BN_INTEGER_OPTION \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_GMP_INTEGER_OPTION \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_OPTION \
-    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_0X_HEX_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_UPPER_HEX_OPTION \
+    XOS_APP_CONSOLE_CRYPTO_BASE_MAIN_LOWER_HEX_OPTION \
      XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_VERBOSE_OPTION \
     XOS_APP_CONSOLE_CRYPTO_RSA_MAIN_QUIET_OPTION \
 
@@ -364,7 +366,10 @@ public:
       output_public_key_run_(0), output_get_public_key_run_(0), output_test_public_key_run_(0),
       output_private_key_run_(0), output_get_private_key_run_(0), output_test_private_key_run_(0),
       output_key_pair_run_(0), output_get_key_pair_run_(0), output_test_key_pair_run_(0),
-      no_miller_rabin_test_(false), verbose_(false) {
+      no_miller_rabin_test_(false), const_0x_output_(false), verbose_(false),
+      key_pair_define_("XOS_APP_CONSOLE_CRYPTO_RSA_KEY_PAIR_CONST_HPP"), 
+      public_key_define_("XOS_APP_CONSOLE_CRYPTO_RSA_PUBLIC_KEY_CONST_HPP"), 
+      private_key_define_("XOS_APP_CONSOLE_CRYPTO_RSA_PRIVATE_KEY_CONST_HPP") {
     }
     virtual ~main_optt() {
     }
@@ -418,6 +423,10 @@ protected:
     }
     virtual int before_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
+        const char_t* arg = 0;
+        if ((optind < (argc)) && ((arg = argv[optind])) && (arg[0])) {
+            key_pair_define_.assign(arg);
+        }
         return err;
     }
     virtual int after_generate_key_pair_run(int argc, char_t** argv, char_t** env) {
@@ -755,7 +764,7 @@ protected:
     /// 
 
     ///
-    /// ...rsa_public_encrypt_run
+    /// ...rsa_public...crypt_run
     /// ...
     /// ...rsa_public_encrypt_run
     int (derives::*rsa_public_encrypt_run_)(int argc, char_t** argv, char_t** env);
@@ -810,12 +819,65 @@ protected:
         run_ = &derives::all_rsa_public_encrypt_run;
         return err;
     }
+    /// ...rsa_public_decrypt_run
+    int (derives::*rsa_public_decrypt_run_)(int argc, char_t** argv, char_t** env);
+    virtual int rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (rsa_public_decrypt_run_) {
+            err = (this->*rsa_public_decrypt_run_)(argc, argv, env);
+        } else {
+            err = bn_rsa_public_decrypt_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int bn_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_bn_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        rsa_public_decrypt_run_ = &derives::bn_rsa_public_decrypt_run;
+        return err;
+    }
+    virtual int gmp_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_gmp_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        rsa_public_decrypt_run_ = &derives::gmp_rsa_public_decrypt_run;
+        return err;
+    }
+    virtual int before_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_rsa_public_decrypt_run(argc, argv, env))) {
+            int err2 = 0;
+            err = rsa_public_decrypt_run(argc, argv, env);
+            if ((err2 = after_rsa_public_decrypt_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_rsa_public_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_rsa_public_decrypt_run;
+        return err;
+    }
     /// ...
-    /// ...rsa_public_encrypt_run
+    /// ...rsa_public...crypt_run
     /// 
 
     ///
-    /// ...rsa_private_encrypt_run
+    /// ...rsa_private...crypt_run
     /// ...
     /// ...rsa_private_encrypt_run
     int (derives::*rsa_private_encrypt_run_)(int argc, char_t** argv, char_t** env);
@@ -870,8 +932,61 @@ protected:
         run_ = &derives::all_rsa_private_encrypt_run;
         return err;
     }
+    /// ...rsa_private_decrypt_run
+    int (derives::*rsa_private_decrypt_run_)(int argc, char_t** argv, char_t** env);
+    virtual int rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (rsa_private_decrypt_run_) {
+            err = (this->*rsa_private_decrypt_run_)(argc, argv, env);
+        } else {
+            err = bn_rsa_private_decrypt_run(argc, argv, env);
+        }
+        return err;
+    }
+    virtual int bn_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_bn_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        rsa_private_decrypt_run_ = &derives::bn_rsa_private_decrypt_run;
+        return err;
+    }
+    virtual int gmp_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int set_gmp_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        rsa_private_decrypt_run_ = &derives::gmp_rsa_private_decrypt_run;
+        return err;
+    }
+    virtual int before_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_rsa_private_decrypt_run(argc, argv, env))) {
+            int err2 = 0;
+            err = rsa_private_decrypt_run(argc, argv, env);
+            if ((err2 = after_rsa_private_decrypt_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_rsa_private_decrypt_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_rsa_private_decrypt_run;
+        return err;
+    }
     /// ...
-    /// ...rsa_private_encrypt_run
+    /// ...rsa_private...crypt_run
     /// 
 
     ///
@@ -1330,17 +1445,21 @@ protected:
         if (output_public_key_run_) {
             err = (this->*output_public_key_run_)(argc, argv, env);
         } else {
-            err = default_output_public_key_run(argc, argv, env);
+            err = all_output_get_public_key_run(argc, argv, env);
         }
         return err;
     }
-    virtual int default_output_public_key_run(int argc, char_t** argv, char_t** env) {
+    virtual int set_default_output_public_key_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = all_output_test_public_key_run(argc, argv, env);
+        output_public_key_run_ = 0;
         return err;
     }
     virtual int before_output_public_key_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
+        const char_t* arg = 0;
+        if ((optind < (argc)) && ((arg = argv[optind])) && (arg[0])) {
+            public_key_define_.assign(arg);
+        }
         return err;
     }
     virtual int after_output_public_key_run(int argc, char_t** argv, char_t** env) {
@@ -1457,17 +1576,21 @@ protected:
         if (output_private_key_run_) {
             err = (this->*output_private_key_run_)(argc, argv, env);
         } else {
-            err = default_output_private_key_run(argc, argv, env);
+            err = all_output_get_private_key_run(argc, argv, env);
         }
         return err;
     }
-    virtual int default_output_private_key_run(int argc, char_t** argv, char_t** env) {
+    virtual int set_default_output_private_key_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = all_output_test_private_key_run(argc, argv, env);
+        output_private_key_run_ = 0;
         return err;
     }
     virtual int before_output_private_key_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
+        const char_t* arg = 0;
+        if ((optind < (argc)) && ((arg = argv[optind])) && (arg[0])) {
+            private_key_define_.assign(arg);
+        }
         return err;
     }
     virtual int after_output_private_key_run(int argc, char_t** argv, char_t** env) {
@@ -1590,11 +1713,15 @@ protected:
     }
     virtual int default_output_key_pair_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = all_output_test_key_pair_run(argc, argv, env);
+        err = all_output_get_key_pair_run(argc, argv, env);
         return err;
     }
     virtual int before_output_key_pair_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
+        const char_t* arg = 0;
+        if ((optind < (argc)) && ((arg = argv[optind])) && (arg[0])) {
+            key_pair_define_.assign(arg);
+        }
         return err;
     }
     virtual int after_output_key_pair_run(int argc, char_t** argv, char_t** env) {
@@ -1766,7 +1893,55 @@ protected:
     /// ...output_modulus...run
     /// 
 
+    /// output_const_0x_verbage...
+    virtual int output_const_0x_verbage_sized(const char_t* verbage, const byte_array_t& array) {
+        int err = 0;
+        size_t length = 0;
+        const byte_t* bytes = 0; 
+        if ((bytes = array.has_elements(length))) {
+            err = output_const_0x_verbage_sized(verbage, bytes, length);
+        }
+        return err;
+    }
+    virtual int output_const_0x_verbage_sized(const char_t* verbage, const void* out, size_t len) {
+        int err = 0;
+        err = output_0x_verbage_sized
+        ("const byte_t ", " = {", "};", verbage, out, len);
+        return err;
+    }
+    virtual int output_0x_verbage_sized
+    (const char_t* before, const char_t* between, const char_t* after, 
+     const char_t* verbage, const void* out, size_t len) {
+        int err = 0;
+        if ((out) && (len)) {
+            if ((before) && (before[0])) {
+                this->out(before);
+            }
+            if ((verbage) && (verbage[0])) {
+                unsigned_to_string size(len);
+                this->out(verbage);
+                this->out("[");
+                this->out(size);
+                this->out("]");
+            }
+            if ((between) && (between[0])) {
+                this->outln(between);
+            }
+            this->output_0x(out, len);
+            if ((after) && (after[0])) {
+                this->outln(after);
+            } else {
+                if ((verbage) && (verbage[0])) {
+                    this->outln();
+                }
+            }
+        }
+        return err;
+    }
+
+    /// 
     /// output_hex_verbage...
+    /// ...
     virtual int output_hex_verbage_sized(const char_t* verbage, const byte_array_t& array) {
         int err = 0;
         size_t length = 0;
@@ -1776,16 +1951,18 @@ protected:
         }
         return err;
     }
-    virtual int output_hex_verbage(const char_t* verbage, const byte_array_t& array) {
+    typedef int (derives::*output_hex_verbage_sized_t)(const char_t* verbage, const void* out, size_t len);
+    output_hex_verbage_sized_t output_hex_verbage_sized_;
+    virtual int output_hex_verbage_sized(const char_t* verbage, const void* out, size_t len) {
         int err = 0;
-        size_t length = 0;
-        const byte_t* bytes = 0; 
-        if ((bytes = array.has_elements(length))) {
-            err = output_hex_verbage(verbage, bytes, length);
+        if (output_hex_verbage_sized_) {
+            err = (this->*output_hex_verbage_sized_)(verbage, out, len);
+        } else {
+            err = default_output_hex_verbage_sized(verbage, out, len);
         }
         return err;
     }
-    virtual int output_hex_verbage_sized(const char_t* verbage, const void* out, size_t len) {
+    virtual int default_output_hex_verbage_sized(const char_t* verbage, const void* out, size_t len) {
         int err = 0;
         if ((out) && (len)) {
             bool verbose = this->verbose();
@@ -1800,6 +1977,25 @@ protected:
             if ((verbose) && (verbage) && (verbage[0])) {
                 this->outln();
             }
+        }
+        return err;
+    }
+    virtual output_hex_verbage_sized_t set_output_const_0x_verbage_sized() {
+        output_hex_verbage_sized_t output_hex_verbage_sized = output_hex_verbage_sized_;
+        output_hex_verbage_sized_ = &derives::output_const_0x_verbage_sized;
+        return output_hex_verbage_sized;
+    }
+    virtual output_hex_verbage_sized_t unset_output_0x_verbage_sized(output_hex_verbage_sized_t to) {
+        output_hex_verbage_sized_t output_hex_verbage_sized = output_hex_verbage_sized_;
+        output_hex_verbage_sized_ = to;
+        return output_hex_verbage_sized;
+    }
+    virtual int output_hex_verbage(const char_t* verbage, const byte_array_t& array) {
+        int err = 0;
+        size_t length = 0;
+        const byte_t* bytes = 0; 
+        if ((bytes = array.has_elements(length))) {
+            err = output_hex_verbage(verbage, bytes, length);
         }
         return err;
     }
@@ -1818,6 +2014,74 @@ protected:
         }
         return err;
     }
+    /// ...
+    /// output_hex_verbage...
+    /// 
+
+    /// 
+    /// output_hex_verbose...
+    /// ...
+    virtual int output_hex_verbose_sized(const char_t* verbage, const byte_array_t& array) {
+        int err = 0;
+        size_t length = 0;
+        const byte_t* bytes = 0; 
+        if ((bytes = array.has_elements(length))) {
+            err = output_hex_verbose_sized(verbage, bytes, length);
+        }
+        return err;
+    }
+    typedef int (derives::*output_hex_verbose_sized_t)(const char_t* verbage, const void* out, size_t len);
+    output_hex_verbose_sized_t output_hex_verbose_sized_;
+    virtual int output_hex_verbose_sized(const char_t* verbage, const void* out, size_t len) {
+        int err = 0;
+        if (output_hex_verbose_sized_) {
+            err = (this->*output_hex_verbose_sized_)(verbage, out, len);
+        } else {
+            err = default_output_hex_verbose_sized(verbage, out, len);
+        }
+        return err;
+    }
+    virtual int default_output_hex_verbose_sized(const char_t* verbage, const void* out, size_t len) {
+        int err = 0;
+        if ((out) && (len)) {
+            bool verbose = this->verbose();
+            if ((verbose) && (verbage) && (verbage[0])) {
+                unsigned_to_string size(len);
+                this->out(verbage);
+                this->out("[");
+                this->out(size);
+                this->outln("]:\\");
+                this->output_hex(out, len);
+                this->outln();
+            }
+        }
+        return err;
+    }
+    virtual int output_hex_verbose(const char_t* verbage, const byte_array_t& array) {
+        int err = 0;
+        size_t length = 0;
+        const byte_t* bytes = 0; 
+        if ((bytes = array.has_elements(length))) {
+            err = output_hex_verbose(verbage, bytes, length);
+        }
+        return err;
+    }
+    virtual int output_hex_verbose(const char_t* verbage, const void* out, size_t len) {
+        int err = 0;
+        if ((out) && (len)) {
+            bool verbose = this->verbose();
+            if ((verbose) && (verbage) && (verbage[0])) {
+                this->out(verbage);
+                this->outln(":\\");
+                this->output_hex(out, len);
+                this->outln();
+            }
+        }
+        return err;
+    }
+    /// ...
+    /// output_hex_verbose...
+    /// 
 
     /// ...on_set_hex_literals
     int (derives::*on_set_hex_literals_)(xos::io::hex::read_to_byte_arrays &to_arrays, string_t &literal);
@@ -1926,6 +2190,15 @@ protected:
         return no_miller_rabin_test_;
     }
 
+    /// ...const_0x_output
+    virtual bool set_const_0x_output(const bool to = true) {
+        const_0x_output_ = to;
+        return const_0x_output_;
+    }
+    virtual bool const_0x_output() const {
+        return const_0x_output_;
+    }
+
     /// ...verbose
     virtual bool set_verbose(const bool to = true) {
         verbose_ = to;
@@ -1947,8 +2220,6 @@ protected:
         if ((optarg) && (optarg[0])) {
             if (!(err = on_set_rsa_plain_literal(optarg, argc, argv, env))) {
                 if (!(err = set_output_rsa_plain_run(argc, argv, env))) {
-                    if (!(err = set_output_get_rsa_public_cipher_run(argc, argv, env))) {
-                    }
                 }
             }
         } else {
@@ -1973,8 +2244,6 @@ protected:
         if ((optarg) && (optarg[0])) {
             if (!(err = on_set_rsa_cipher_literal(optarg, argc, argv, env))) {
                 if (!(err = set_output_rsa_cipher_run(argc, argv, env))) {
-                    if (!(err = set_output_get_rsa_private_cipher_run(argc, argv, env))) {
-                    }
                 }
             }
         } else {
@@ -2007,7 +2276,7 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        if (!(err = set_rsa_private_encrypt_run(argc, argv, env))) {
+        if (!(err = set_rsa_private_decrypt_run(argc, argv, env))) {
         }
         return err;
     }
@@ -2269,10 +2538,14 @@ protected:
             }
         }
         if (!(err = set_bn_rsa_public_encrypt_run(argc, argv, env))) {
-            if (!(err = set_bn_rsa_private_encrypt_run(argc, argv, env))) {
-                if (!(err = set_bn_test_key_pair_run(argc, argv, env))) {
-                    if (!(err = set_bn_output_test_rsa_public_cipher_run(argc, argv, env))) {
-                        if (!(err = set_bn_output_get_rsa_public_cipher_run(argc, argv, env))) {
+            if (!(err = set_bn_rsa_public_decrypt_run(argc, argv, env))) {
+                if (!(err = set_bn_rsa_private_encrypt_run(argc, argv, env))) {
+                    if (!(err = set_bn_rsa_private_decrypt_run(argc, argv, env))) {
+                        if (!(err = set_bn_test_key_pair_run(argc, argv, env))) {
+                            if (!(err = set_bn_output_test_rsa_public_cipher_run(argc, argv, env))) {
+                                if (!(err = set_bn_output_get_rsa_public_cipher_run(argc, argv, env))) {
+                                }
+                            }
                         }
                     }
                 }
@@ -2296,10 +2569,14 @@ protected:
             }
         }
         if (!(err = set_gmp_rsa_public_encrypt_run(argc, argv, env))) {
-            if (!(err = set_gmp_rsa_private_encrypt_run(argc, argv, env))) {
-                if (!(err = set_gmp_test_key_pair_run(argc, argv, env))) {
-                    if (!(err = set_gmp_output_test_rsa_public_cipher_run(argc, argv, env))) {
-                        if (!(err = set_gmp_output_get_rsa_public_cipher_run(argc, argv, env))) {
+            if (!(err = set_gmp_rsa_public_decrypt_run(argc, argv, env))) {
+                if (!(err = set_gmp_rsa_private_encrypt_run(argc, argv, env))) {
+                    if (!(err = set_gmp_rsa_private_decrypt_run(argc, argv, env))) {
+                        if (!(err = set_gmp_test_key_pair_run(argc, argv, env))) {
+                            if (!(err = set_gmp_output_test_rsa_public_cipher_run(argc, argv, env))) {
+                                if (!(err = set_gmp_output_get_rsa_public_cipher_run(argc, argv, env))) {
+                                }
+                            }
                         }
                     }
                 }
@@ -2314,6 +2591,12 @@ protected:
     }
 
     /// ...on...option...
+    virtual int on_set_Ox_hex_option
+    (int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        set_const_0x_output();
+        return err;
+    }
     virtual int on_verbose_option
     (int optval, const char_t* optarg, const char_t* optname,
      int optind, int argc, char_t**argv, char_t**env) {
@@ -2502,8 +2785,32 @@ protected:
         return _args;
     }
 
+    /// ...key_..._define...
+    virtual const char_t* key_pair_define_chars() const {
+        string_t &key_pair_define = this->key_pair_define();
+        return key_pair_define.chars();
+    }
+    virtual const char_t* public_key_define_chars() const {
+        string_t &public_key_define = this->public_key_define();
+        return public_key_define.chars();
+    }
+    virtual const char_t* private_key_define_chars() const {
+        string_t &private_key_define = this->private_key_define();
+        return private_key_define.chars();
+    }
+    virtual string_t &key_pair_define() const {
+        return (string_t &)key_pair_define_;
+    }
+    virtual string_t &public_key_define() const {
+        return (string_t &)public_key_define_;
+    }
+    virtual string_t &private_key_define() const {
+        return (string_t &)private_key_define_;
+    }
+
 protected:
-    bool no_miller_rabin_test_, verbose_;
+    bool no_miller_rabin_test_, const_0x_output_, verbose_;
+    string_t key_pair_define_, public_key_define_, private_key_define_; 
 }; /// class main_optt
 typedef main_optt<> main_opt;
 

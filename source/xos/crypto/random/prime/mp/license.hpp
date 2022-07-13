@@ -1,4 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
+/// Copyright (c) 1995 Tatu Ylonen <ylo@cs.hut.fi>, Espoo, Finland
+/// All rights reserved
 /// Copyright (C) 1991, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
 ///
 /// This file is part of the GNU MP Library.
