@@ -16,7 +16,7 @@
 #   File: usea.pro
 #
 # Author: $author$
-#   Date: 2/21/2022
+#   Date: 4/1/2022
 #
 # os specific QtCreator project .pro file for framework ucifra executable usea
 ########################################################################

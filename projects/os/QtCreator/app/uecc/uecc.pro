@@ -13,60 +13,70 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: libucifra.pro
+#   File: uecc.pro
 #
 # Author: $author$
-#   Date: 3/31/2022
+#   Date: 7/6/2022
 #
-# os specific QtCreator project .pro file for framework ucifra static library libucifra
+# os specific QtCreator project .pro file for framework ucifra executable uecc
 ########################################################################
 #
-# Debug: ucifra/build/os/QtCreator/Debug/lib/libucifra
-# Release: ucifra/build/os/QtCreator/Release/lib/libucifra
-# Profile: ucifra/build/os/QtCreator/Profile/lib/libucifra
+# Debug: ucifra/build/os/QtCreator/Debug/bin/uecc
+# Release: ucifra/build/os/QtCreator/Release/bin/uecc
+# Profile: ucifra/build/os/QtCreator/Profile/bin/uecc
 #
 include(../../../../../build/QtCreator/ucifra.pri)
 include(../../../../QtCreator/ucifra.pri)
 include(../../ucifra.pri)
-include(../../../../QtCreator/lib/libucifra/libucifra.pri)
+include(../../../../QtCreator/app/uecc/uecc.pri)
 
-TARGET = $${libucifra_TARGET}
-TEMPLATE = $${libucifra_TEMPLATE}
-CONFIG += $${libucifra_CONFIG}
+TARGET = $${uecc_TARGET}
 
 ########################################################################
 # INCLUDEPATH
 #
 INCLUDEPATH += \
-$${libucifra_INCLUDEPATH} \
+$${uecc_INCLUDEPATH} \
 
 # DEFINES
 # 
 DEFINES += \
-$${libucifra_DEFINES} \
+$${uecc_DEFINES} \
 
 ########################################################################
 # OBJECTIVE_HEADERS
 #
 OBJECTIVE_HEADERS += \
-$${libucifra_OBJECTIVE_HEADERS} \
+$${uecc_OBJECTIVE_HEADERS} \
 
 # OBJECTIVE_SOURCES
 #
 OBJECTIVE_SOURCES += \
-$${libucifra_OBJECTIVE_SOURCES} \
+$${uecc_OBJECTIVE_SOURCES} \
 
 ########################################################################
 # HEADERS
 #
 HEADERS += \
-$${libucifra_HEADERS} \
-$${libucifra_OBJECTIVE_HEADERS} \
+$${uecc_HEADERS} \
+$${uecc_OBJECTIVE_HEADERS} \
 
 # SOURCES
 #
 SOURCES += \
-$${libucifra_SOURCES} \
+$${uecc_SOURCES} \
+
+########################################################################
+# FRAMEWORKS
+#
+FRAMEWORKS += \
+$${uecc_FRAMEWORKS} \
+
+# LIBS
+#
+LIBS += \
+$${uecc_LIBS} \
+$${FRAMEWORKS} \
 
 ########################################################################
 

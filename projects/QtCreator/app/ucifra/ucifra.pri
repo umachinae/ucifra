@@ -16,7 +16,7 @@
 #   File: ucifra.pri
 #
 # Author: $author$
-#   Date: 1/26/2022
+#   Date: 5/9/2022
 #
 # generic QtCreator project .pri file for framework ucifra executable ucifra
 ########################################################################
@@ -55,12 +55,14 @@ XOS_CONSOLE_MAIN_MAIN \
 # ucifra_exe HEADERS
 #
 ucifra_exe_HEADERS += \
-$${UCIFRA_SRC}/xos/app/console/ucifra/main.hpp \
+$${UCIFRA_SRC}/xos/app/console/ucifra/version/main_opt.hpp \
+$${UCIFRA_SRC}/xos/app/console/ucifra/version/main.hpp \
 
 # ucifra_exe SOURCES
 #
 ucifra_exe_SOURCES += \
-$${UCIFRA_SRC}/xos/app/console/ucifra/main.cpp \
+$${UCIFRA_SRC}/xos/app/console/ucifra/version/main_opt.cpp \
+$${UCIFRA_SRC}/xos/app/console/ucifra/version/main.cpp \
 
 ########################################################################
 # ucifra_exe FRAMEWORKS

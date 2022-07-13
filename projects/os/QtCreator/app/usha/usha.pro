@@ -16,7 +16,7 @@
 #   File: usha.pro
 #
 # Author: $author$
-#   Date: 2/23/2022
+#   Date: 4/1/2022
 #
 # os specific QtCreator project .pro file for framework ucifra executable usha
 ########################################################################

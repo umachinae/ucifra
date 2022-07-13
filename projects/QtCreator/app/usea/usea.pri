@@ -16,7 +16,7 @@
 #   File: usea.pri
 #
 # Author: $author$
-#   Date: 2/21/2022
+#   Date: 4/1/2022
 #
 # generic QtCreator project .pri file for framework ucifra executable usea
 ########################################################################
@@ -44,12 +44,12 @@ XOS_CONSOLE_MAIN_MAIN \
 # usea OBJECTIVE_HEADERS
 #
 #usea_OBJECTIVE_HEADERS += \
-#$${UCIFRA_SRC}/xos/app/console/crypto/usea/main.hh \
+#$${UCIFRA_SRC}/xos/app/console/usea/main.hh \
 
 # usea OBJECTIVE_SOURCES
 #
 #usea_OBJECTIVE_SOURCES += \
-#$${UCIFRA_SRC}/xos/app/console/crypto/usea/main.mm \
+#$${UCIFRA_SRC}/xos/app/console/usea/main.mm \
 
 ########################################################################
 # usea HEADERS

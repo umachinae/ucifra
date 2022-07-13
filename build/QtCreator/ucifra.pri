@@ -16,7 +16,7 @@
 #   File: ucifra.pri
 #
 # Author: $author$
-#   Date: 1/26/2022
+#   Date: 3/31/2022
 #
 # build specific QtCreator project .pri file for framework ucifra
 ########################################################################
@@ -212,6 +212,8 @@ $${build_ucrono_FRAMEWORKS} \
 $${build_ufila_FRAMEWORKS} \
 $${build_unadir_FRAMEWORKS} \
 $${build_urostra_FRAMEWORKS} \
+$${build_ump_FRAMEWORKS} \
+$${build_ubn_FRAMEWORKS} \
 
 
 # build ucifra LIBS
@@ -221,5 +223,7 @@ $${build_ucrono_LIBS} \
 $${build_ufila_LIBS} \
 $${build_unadir_LIBS} \
 $${build_urostra_LIBS} \
+$${build_ump_LIBS} \
+$${build_ubn_LIBS} \
 
 ########################################################################

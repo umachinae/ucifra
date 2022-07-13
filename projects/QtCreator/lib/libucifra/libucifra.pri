@@ -16,14 +16,14 @@
 #   File: libucifra.pri
 #
 # Author: $author$
-#   Date: 1/26/2022
+#   Date: 5/9/2022
 #
 # generic QtCreator project .pri file for framework ucifra static library libucifra
 ########################################################################
 
 ########################################################################
 # libucifra
-XOS_LIB_UCIFRA_VERSION_BUILD_DATE = 1/26/2022 #$$system(~/bin/utility/tdate)
+XOS_LIB_UCIFRA_VERSION_BUILD_DATE = 5/9/2022 #$$system(~/bin/utility/tdate)
 
 # libucifra TARGET
 #

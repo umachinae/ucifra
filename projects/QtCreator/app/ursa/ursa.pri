@@ -55,17 +55,6 @@ XOS_CONSOLE_MAIN_MAIN \
 # ursa HEADERS
 #
 ursa_HEADERS += \
-$${UCIFRA_SRC}/xos/base/extended/creator.hpp \
-$${UCIFRA_SRC}/xos/base/array.hpp \
-$${UCIFRA_SRC}/xos/base/arrays.hpp \
-\
-$${UCIFRA_SRC}/xos/io/array/reader.hpp \
-$${UCIFRA_SRC}/xos/io/told.hpp \
-$${UCIFRA_SRC}/xos/io/delegated/reader.hpp \
-$${UCIFRA_SRC}/xos/io/hex/reader.hpp \
-$${UCIFRA_SRC}/xos/io/hex/read_to_array.hpp \
-$${UCIFRA_SRC}/xos/io/hex/read_to_arrays.hpp \
-\
 $${UCIFRA_SRC}/xos/crypto/base.hpp \
 $${UCIFRA_SRC}/xos/crypto/array.hpp \
 $${UCIFRA_SRC}/xos/crypto/random/reader.hpp \
@@ -122,16 +111,8 @@ $${UCIFRA_SRC}/xos/app/console/crypto/rsa/main.hpp \
 # ursa SOURCES
 #
 ursa_SOURCES += \
-$${UCIFRA_SRC}/xos/base/extended/creator.cpp \
-$${UCIFRA_SRC}/xos/crypto/array.cpp \
-$${UCIFRA_SRC}/xos/base/arrays.cpp \
-\
-$${UCIFRA_SRC}/xos/io/told.cpp \
-$${UCIFRA_SRC}/xos/io/hex/reader.cpp \
-$${UCIFRA_SRC}/xos/io/hex/read_to_array.cpp \
-$${UCIFRA_SRC}/xos/io/hex/read_to_arrays.cpp \
-\
 $${UCIFRA_SRC}/xos/crypto/base.cpp \
+$${UCIFRA_SRC}/xos/crypto/array.cpp \
 $${UCIFRA_SRC}/xos/crypto/random/number/reader.cpp \
 $${UCIFRA_SRC}/xos/crypto/random/prime/small_primes.cpp \
 \

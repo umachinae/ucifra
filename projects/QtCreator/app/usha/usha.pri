@@ -16,7 +16,7 @@
 #   File: usha.pri
 #
 # Author: $author$
-#   Date: 2/23/2022
+#   Date: 4/1/2022
 #
 # generic QtCreator project .pri file for framework ucifra executable usha
 ########################################################################
@@ -44,12 +44,12 @@ XOS_CONSOLE_MAIN_MAIN \
 # usha OBJECTIVE_HEADERS
 #
 #usha_OBJECTIVE_HEADERS += \
-#$${UCIFRA_SRC}/xos/app/console/crypto/hash/base/main.hh \
+#$${UCIFRA_SRC}/xos/app/console/usha/main.hh \
 
 # usha OBJECTIVE_SOURCES
 #
 #usha_OBJECTIVE_SOURCES += \
-#$${UCIFRA_SRC}/xos/app/console/crypto/hash/base/main.mm \
+#$${UCIFRA_SRC}/xos/app/console/usha/main.mm \
 
 ########################################################################
 # usha HEADERS

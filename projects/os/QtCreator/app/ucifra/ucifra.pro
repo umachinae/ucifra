@@ -16,7 +16,7 @@
 #   File: ucifra.pro
 #
 # Author: $author$
-#   Date: 1/26/2022
+#   Date: 3/31/2022
 #
 # os specific QtCreator project .pro file for framework ucifra executable ucifra
 ########################################################################

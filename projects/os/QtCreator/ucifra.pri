@@ -16,7 +16,7 @@
 #   File: ucifra.pri
 #
 # Author: $author$
-#   Date: 1/26/2022
+#   Date: 3/31/2022
 #
 # os specific QtCreator project .pri file for framework ucifra
 ########################################################################
@@ -75,6 +75,7 @@ UBN_PRJ_BLD = $${OTHER_BLD}/$${UBN_PRJ}/build/$${UCIFRA_BUILD}/QtCreator/$${BUIL
 #UBN_LIB = $${UBN_THIRDPARTY_PRJ_BLD}/lib
 #UBN_LIB = $${UBN_PKG_BLD}/lib
 #UBN_LIB = $${UBN_PRJ_BLD}/lib
+#UBN_LIB = $${UCIFRA_LIB}
 UBN_LIB = $${UCIFRA_LIB}
 UBN_LIB_NAME = u$${UBN_NAME}
 
@@ -83,6 +84,7 @@ UBN_LIB_NAME = u$${UBN_NAME}
 ubn_LIBS += \
 -L$${UBN_LIB}/lib$${UBN_LIB_NAME} \
 -l$${UBN_LIB_NAME} \
+
 
 ########################################################################
 # ump
@@ -96,8 +98,9 @@ UMP_PRJ_BLD = $${OTHER_BLD}/$${UMP_PRJ}/build/$${UCIFRA_BUILD}/QtCreator/$${BUIL
 #UMP_LIB = $${UMP_THIRDPARTY_PRJ_MAKE_BLD}/lib
 #UMP_LIB = $${UMP_THIRDPARTY_PKG_BLD}/lib
 #UMP_LIB = $${UMP_THIRDPARTY_PRJ_BLD}/lib
-@UMP_LIB = $${UMP_PKG_BLD}/lib
+#UMP_LIB = $${UMP_PKG_BLD}/lib
 #UMP_LIB = $${UMP_PRJ_BLD}/lib
+#UMP_LIB = $${UCIFRA_LIB}
 UMP_LIB = $${UCIFRA_LIB}
 UMP_LIB_NAME = u$${UMP_NAME}
 
@@ -110,6 +113,7 @@ ump_LIBS += \
 -l$${UMP_LIB_NAME}n \
 -L$${UMP_LIB}/lib$${UMP_LIB_NAME} \
 -l$${UMP_LIB_NAME} \
+
 
 ########################################################################
 # urostra
@@ -217,7 +221,7 @@ ucifra_INCLUDEPATH += \
 #
 ucifra_DEFINES += \
 
-# ucifra LIBS
+# ucifra os LIBS
 #
 contains(UCIFRA_OS,macosx|linux) {
 ucifra_os_LIBS += \
@@ -232,33 +236,31 @@ ucifra_os_LIBS += \
 } else {
 } # contains(UCIFRA_OS,linux)
 
+# ucifra base LIBS
+#
 ucifra_base_LIBS += \
 $${ucrono_LIBS} \
 $${ufila_LIBS} \
 $${unadir_LIBS} \
 $${urostra_LIBS} \
-$${build_ucifra_LIBS} \
 
-ucifra_bn_LIBS += \
-$${ucifra_LIBS} \
-$${ucifra_base_LIBS} \
-$${ubn_LIBS} \
-$${ucifra_os_LIBS} \
-
-ucifra_mp_LIBS += \
-$${ucifra_LIBS} \
-$${ucifra_base_LIBS} \
+# ucifra bnmp LIBS
+#
+ucifra_bnmp_LIBS += \
 $${ump_LIBS} \
-$${ucifra_os_LIBS} \
+$${ubn_LIBS} \
 
+# ucifra rsa LIBS
+#
 ucifra_rsa_LIBS += \
-$${ucifra_LIBS} \
 $${ucifra_base_LIBS} \
-$${ubn_LIBS} \
-$${ump_LIBS} \
+$${ucifra_bnmp_LIBS} \
+$${build_ucifra_LIBS} \
 $${ucifra_os_LIBS} \
 
+# ucifra LIBS
+#
 ucifra_LIBS += \
-$${ucifra_LIBS} \
 $${ucifra_base_LIBS} \
+$${build_ucifra_LIBS} \
 $${ucifra_os_LIBS} \

@@ -16,7 +16,7 @@
 #   File: ursa.pro
 #
 # Author: $author$
-#   Date: 4/14/2022
+#   Date: 4/20/2022
 #
 # os specific QtCreator project .pro file for framework ucifra executable ursa
 ########################################################################
